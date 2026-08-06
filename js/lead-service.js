@@ -142,9 +142,10 @@ async function sendEmail(data) {
   }
 
   const res = await fetch(WEB3FORMS_ENDPOINT, {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body:    JSON.stringify(payload),
+    method:    'POST',
+    headers:   { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body:      JSON.stringify(payload),
+    keepalive: true, // survive page navigation (user taps away before fetch completes)
   });
 
   const json = await res.json();
@@ -176,9 +177,10 @@ async function logToSheet(data) {
   };
 
   const res = await fetch(GOOGLE_SHEET_URL, {
-    method:  'POST',
-    headers: { 'Content-Type': 'text/plain' }, // text/plain avoids CORS preflight
-    body:    JSON.stringify(payload),
+    method:    'POST',
+    headers:   { 'Content-Type': 'text/plain' }, // text/plain avoids CORS preflight
+    body:      JSON.stringify(payload),
+    keepalive: true, // survive page navigation
   });
 
   const json = await res.json();
@@ -216,15 +218,16 @@ function formatScores(scores) {
 
 /**
  * Sends lead data to Tejal's marketing automation platform.
- * Non-blocking — if it fails, we log the error and move on.
- * The visitor's experience is never affected by this call.
+ * Uses navigator.sendBeacon() so the request survives page navigations
+ * (e.g. user taps "View your full report" immediately after submitting).
+ * Falls back to fetch() if sendBeacon is unavailable.
  */
 async function sendToMarketingPlatform(data) {
   if (!MARKETING_WEBHOOK_URL) return false;
 
   const archetypeName = ARCHETYPE_NAMES[data.archetype] || data.archetype || '';
 
-  const payload = {
+  const payload = JSON.stringify({
     source:    data.source    || '',
     firstName: data.firstName || '',
     lastName:  data.lastName  || '',
@@ -233,13 +236,26 @@ async function sendToMarketingPlatform(data) {
     program:   PROGRAM_NAMES[data.program] || data.program || '',
     archetype: archetypeName,
     scores:    formatScores(data.scores),
-  };
+  });
 
+  // sendBeacon is fire-and-forget — guaranteed delivery even on navigation
+  if (typeof navigator.sendBeacon === 'function') {
+    const blob = new Blob([payload], { type: 'text/plain' });
+    const queued = navigator.sendBeacon(MARKETING_WEBHOOK_URL, blob);
+    if (!queued) {
+      console.warn('[lead-service] sendBeacon rejected — falling back to fetch');
+    } else {
+      return true;
+    }
+  }
+
+  // Fallback for environments without sendBeacon (rare)
   try {
     const res = await fetch(MARKETING_WEBHOOK_URL, {
       method:  'POST',
-      headers: { 'Content-Type': 'text/plain' }, // text/plain avoids CORS preflight
-      body:    JSON.stringify(payload),
+      headers: { 'Content-Type': 'text/plain' },
+      body:    payload,
+      keepalive: true, // also helps survive navigations in modern browsers
     });
 
     if (!res.ok) {
@@ -249,7 +265,6 @@ async function sendToMarketingPlatform(data) {
 
     return true;
   } catch (err) {
-    // Network error or timeout — log and continue silently
     console.warn('[lead-service] Marketing webhook failed:', err.message);
     return false;
   }
