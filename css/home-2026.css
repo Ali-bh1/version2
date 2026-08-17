@@ -7,8 +7,9 @@
   --em: var(--forest);          /* emerald  */
   --ch: var(--gold);            /* champagne */
   --sa: var(--sand);            /* sand      */
-  --wh: #ffffff;
+  --wh: #FBFAF5;               /* warm vanilla — no cold-white anywhere */
   --cream: #FBFAF6;
+  --cream-lift: #FEFDFB;        /* subtle lift for cards/inputs on cream */
 }
 
 /* ── Reset (scoped, self-contained homepage) ──
@@ -137,8 +138,8 @@ section[id],header[id]{scroll-margin-top:88px}
 .split .t p{font-weight:300;font-size:15.5px;line-height:1.8;opacity:.9;margin-top:18px;max-width:46ch}
 .split .im{min-height:340px;position:relative;overflow:hidden}
 .split .im img,.split .im svg{width:100%;height:100%;object-fit:cover;display:block}
-.cream{background:var(--cream)}
-.sand{background:var(--sa)}
+.cream{background-color:var(--cream)}
+.sand{background-color:var(--sa)}
 .dark{background:var(--em);color:var(--wh)}
 .dark h2{color:var(--ch)}.dark p{color:rgba(255,255,255,.88)}
 /* Light cards inside a dark section must not inherit the white body copy */
@@ -159,7 +160,7 @@ section[id],header[id]{scroll-margin-top:88px}
 @media(max-width:900px){.cos{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.cos{grid-template-columns:1fr}}
 .cos div{background:var(--cream);padding:28px 24px;text-align:left;transition:background .35s}
-.cos div:hover{background:#fff}
+.cos div:hover{background:var(--cream-lift)}
 .cos b{display:block;font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.45;margin-bottom:10px;font-weight:500}
 .cos p{font-size:15px;font-weight:300;line-height:1.6;margin:0}
 .cos em{font-style:italic}
@@ -266,7 +267,73 @@ section[id],header[id]{scroll-margin-top:88px}
 .h26 footer .soc svg{width:17px;height:17px;color:var(--ch);flex-shrink:0}
 .h26 footer .ft{font-size:14.5px;font-weight:300;line-height:1.6;margin-bottom:12px}
 .h26 footer .ft a{padding:0}
-.h26 footer .cp{text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.4;margin-top:40px;padding-top:22px;border-top:1px solid rgba(230,211,163,.2)}
+.h26 footer .cp{text-align:center;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.4;margin-top:22px;padding-top:22px;border-top:1px solid rgba(230,211,163,.2)}
+
+/* ── DISCLAIMER ── */
+
+/* ── SUBTLE BACKGROUND WAVE PATTERNS ── */
+/* Organic wave textures on cream/vanilla/sand sections for visual depth.
+   --wave-svg:      bottom-positioned, broader undulations
+   --wave-svg-top:  top-positioned, gentler arcs (flipped orientation)
+   --wave-svg-sand: tuned for sand (#e4d9c4) backgrounds                 */
+.h26{
+  --wave-svg: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23e6d3a3' fill-opacity='0.06' d='M0,224L48,213.3C96,203,192,181,288,186.7C384,192,480,224,576,218.7C672,213,768,171,864,165.3C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'/%3E%3Cpath fill='%23e6d3a3' fill-opacity='0.04' d='M0,96L48,112C96,128,192,160,288,154.7C384,149,480,107,576,101.3C672,96,768,128,864,138.7C960,149,1056,139,1152,122.7C1248,107,1344,85,1392,74.7L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'/%3E%3C/svg%3E");
+
+  /* top-positioned wave — gentler arcs flowing downward from the top */
+  --wave-svg-top: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23e6d3a3' fill-opacity='0.05' d='M0,64L60,80C120,96,240,128,360,138.7C480,149,600,139,720,122.7C840,107,960,85,1080,90.7C1200,96,1320,128,1380,144L1440,160L1440,0L1380,0C1320,0,1200,0,1080,0C960,0,840,0,720,0C600,0,480,0,360,0C240,0,120,0,60,0L0,0Z'/%3E%3Cpath fill='%23e6d3a3' fill-opacity='0.035' d='M0,128L48,138.7C96,149,192,171,288,176C384,181,480,171,576,149.3C672,128,768,96,864,101.3C960,107,1056,149,1152,160C1248,171,1344,149,1392,138.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z'/%3E%3C/svg%3E");
+
+  /* sand-tuned wave — uses the forest colour for contrast on sand bg */
+  --wave-svg-sand: url("data:image/svg+xml,%3Csvg preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%23154230' fill-opacity='0.04' d='M0,192L80,186.7C160,181,320,171,480,176C640,181,800,203,960,202.7C1120,203,1280,181,1360,170.7L1440,160L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z'/%3E%3Cpath fill='%23154230' fill-opacity='0.025' d='M0,96L80,106.7C160,117,320,139,480,133.3C640,128,800,96,960,101.3C1120,107,1280,149,1360,170.7L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z'/%3E%3C/svg%3E");
+}
+
+/* --- Bottom waves on cream/vanilla sections --- */
+.mom,.split.cream,.about2,.fqa,.eq26{
+  background-image:var(--wave-svg);
+  background-repeat:no-repeat;
+  background-position:center bottom;
+  background-size:100% 220px;
+}
+
+/* --- Sand sections get bottom wave with forest-tinted SVG --- */
+.say.sand{
+  background-image:var(--wave-svg-sand);
+  background-repeat:no-repeat;
+  background-position:center bottom;
+  background-size:100% 200px;
+}
+
+/* --- Plain cream sections get top wave for variety --- */
+.say.cream{
+  background-image:var(--wave-svg-top);
+  background-repeat:no-repeat;
+  background-position:center top;
+  background-size:100% 180px;
+}
+
+/* --- Unstyled .say (no .sand/.cream/.dark) uses both for full wrap --- */
+.say:not(.sand):not(.cream):not(.dark){
+  background-image:var(--wave-svg-top),var(--wave-svg);
+  background-repeat:no-repeat,no-repeat;
+  background-position:center top,center bottom;
+  background-size:100% 160px,100% 180px;
+}
+
+/* --- Guarantee section on cream gets a gentle top wave --- */
+.gua:not(.dark){
+  background-image:var(--wave-svg-top);
+  background-repeat:no-repeat;
+  background-position:center top;
+  background-size:100% 170px;
+}
+
+/* legal pages also get the subtle texture */
+.legal{
+  background-image:var(--wave-svg);
+  background-repeat:no-repeat;
+  background-position:center bottom;
+  background-size:100% 200px;
+}
+.disc{font-size:11.5px;font-weight:300;line-height:1.7;opacity:.42;color:rgba(255,255,255,.7);max-width:780px;margin:28px auto 0;text-align:center;padding:0 clamp(20px,4vw,40px)}
 
 /* ── SCROLL REVEAL ──
    Gated on html.js so content is never stuck invisible without JS. */
@@ -285,13 +352,13 @@ html.js .reveal-d4{transition-delay:.32s}
 .freewink .tip .heart{display:inline-block;animation:beat 2.4s ease-in-out infinite;color:var(--gold-deep)}
 @keyframes beat{0%,100%{transform:scale(1)}12%{transform:scale(1.22)}24%{transform:scale(1)}}
 .freewink .btn:hover + .tip .free-word,
-.freewink:hover .free-word{color:var(--em);font-weight:600}
-.free-word{transition:color .3s}
+.freewink:hover .free-word{color:var(--em);font-weight:700}
+.free-word{font-weight:600;font-size:1.1em;color:var(--em);transition:color .3s,font-weight .3s}
 
 /* ============================================================
    PROGRAM PAGES (Wealth / Business Expansion Code)
    ============================================================ */
-.php-hero{background:var(--cream);padding:clamp(56px,7vw,96px) 0 clamp(40px,5vw,64px);text-align:center;position:relative;overflow:hidden}
+.php-hero{background-color:var(--cream);background-image:var(--wave-svg);background-repeat:no-repeat;background-position:center bottom;background-size:100% 200px;padding:clamp(56px,7vw,96px) 0 clamp(40px,5vw,64px);text-align:center;position:relative;overflow:hidden}
 .php-hero .eyebrow{display:inline-block;position:relative;padding:0 42px}
 .php-hero .eyebrow:before,.php-hero .eyebrow:after{content:'';position:absolute;top:50%;width:30px;height:1px;background:var(--ch);opacity:.7}
 .php-hero .eyebrow:before{left:0}.php-hero .eyebrow:after{right:0}
@@ -462,7 +529,7 @@ html.js .split-w.in .w{opacity:1;transform:none}
    ABOUT — a contained, breathing portrait rather than a
    full-bleed crop. Smaller on purpose: the work is the subject.
    ============================================================ */
-.about2{padding:clamp(56px,7vw,104px) 0;background:var(--cream)}
+.about2{padding:clamp(56px,7vw,104px) 0;background-color:var(--cream)}
 .about2 .g{display:grid;grid-template-columns:auto 1fr;gap:clamp(34px,5.5vw,78px);align-items:center;max-width:1060px;margin:0 auto}
 @media(max-width:860px){.about2 .g{grid-template-columns:1fr;gap:36px;justify-items:center;text-align:center}}
 .about2 .portrait{position:relative;width:clamp(240px,27vw,340px);aspect-ratio:4/5;flex:none}
@@ -537,6 +604,11 @@ html.js .split-w.in .w{opacity:1;transform:none}
   .story p{font-size:17.5px}
   .amt{font-size:clamp(38px,12vw,48px)}
   .ribbon-track span{font-size:16px;padding:0 18px}
+
+  /* mobile font floor — no body text below 12px */
+  .h26{font-size:max(14px,1em)}
+  .h26 h1,.h26 h2{font-weight:600}
+  .story p{font-size:16px;line-height:1.6}
 }
 
 @media(max-width:400px){

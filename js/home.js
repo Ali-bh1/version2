@@ -116,7 +116,7 @@
             if (p < 1) requestAnimationFrame(step);
           })(performance.now());
         });
-      }, { threshold: 0.4 });
+      }, { threshold: 0.15 });
       io.observe(el);
     });
   }

@@ -8,6 +8,7 @@
 import { Router } from 'express';
 import { query }  from '../db/pool.js';
 import { scoreAssessment, validateAnswers } from '../services/scoring.js';
+import { notifyNewLead } from '../services/mailer.js';
 import { assessmentLimiter, apiLimiter } from '../middleware/rateLimiter.js';
 import { assessmentRules, handleValidation } from '../middleware/validate.js';
 
@@ -78,7 +79,7 @@ router.post(
       );
 
       // Return CLIENT-SAFE data only — no coaching notes, no internal flags
-      return res.status(201).json({
+      const response = {
         success:         true,
         submissionId,
         topArchetype:    result.topArchetype,
@@ -86,7 +87,20 @@ router.post(
         archetype:       result.archetype,       // {name, tag, theme}
         categoryScores:  result.categoryScores,
         sortedCategories: result.sortedCategories,
-      });
+      };
+
+      // Fire email notification asynchronously — never blocks the response
+      notifyNewLead({
+        name:      name.trim(),
+        email:     email.toLowerCase().trim(),
+        phone:     phone?.trim() || '',
+        program,
+        source:    'Assessment Quiz',
+        archetype: result.topArchetype,
+        scores:    result.categoryScores,
+      }).catch(err => console.error('[assessment] Email notification failed:', err.message));
+
+      return res.status(201).json(response);
 
     } catch (err) {
       console.error('[assessment/submit]', err.message);
