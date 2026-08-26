@@ -118,15 +118,31 @@ src="https://www.facebook.com/tr?id=925766013116755&ev=PageView&noscript=1"
   <link rel="stylesheet" href="css/buttons.css">
   <link rel="stylesheet" href="css/responsive.css">
   <link rel="stylesheet" href="css/cursor.css">
+  <link rel="stylesheet" href="css/emerald-2026.css">
   <style>
     /* Kill base.css grain; ensure clean cream bg */
-    body { background-color: #FBFAF5 !important; background-image: none !important; }
+    body { background-image: none !important; }
     body::after { display: none !important; }
-    .wrap { padding-top: calc(96px + clamp(24px,4vw,48px)); }
+
   </style>
+<script>
+sessionStorage.setItem('tejal_scores', JSON.stringify({A:3,B:2,C:1,D:1,E:1}));
+sessionStorage.setItem('tejal_top_type','A');
+sessionStorage.setItem('tejal_lead_name','Priya');
+</script>
 </head>
-<body>
-<!-- nav injected by main.js -->
+<body class="h26 inv rpt">
+<nav id="nav" class="atop">
+  <div class="wrap nin">
+    <a class="brand" href="index.html" aria-label="Tejal Desae — home">
+      <img class="lg" src="images/ref-logo.png" alt="Tejal Desae monogram">
+      <span>Tejal Desae</span>
+    </a>
+    <span class="brand-role">Your Expansion Quotient</span>
+    <a class="ncta ncta-quiet" href="index.html"><span class="lbl">← Back to site</span></a>
+  </div>
+</nav>
+
 <div class="wrap">
 
   <div class="rhead">
@@ -265,7 +281,7 @@ function loadReport() {
 
 async function loadReportFromAPI(submissionId) {
   try {
-    const res = await fetch('/api/assessment/result/' + encodeURIComponent(submissionId), {
+    const res = await fetch('/api/expansion-quotient-t1uqlm/result/' + encodeURIComponent(submissionId), {
       credentials: 'include',
     });
     if (!res.ok) throw new Error('Report not found.');
@@ -293,13 +309,13 @@ function loadReportFromSession() {
   const topType = ss('tejal_top_type');
   const name    = ss('tejal_lead_name') || 'Your';
 
-  if (!topType) { window.location.href = 'assessment.html'; return; }
+  if (!topType) { window.location.href = 'eq-t1uqlm.html'; return; }
   renderReport(name, topType, scores);
 }
 
 function renderReport(name, topType, scores) {
   const a = ARCHETYPES[topType];
-  if (!a) { window.location.href = 'assessment.html'; return; }
+  if (!a) { window.location.href = 'eq-t1uqlm.html'; return; }
 
   // Ensure scores object is valid
   if (!scores || typeof scores !== 'object') {

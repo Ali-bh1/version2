@@ -1,0 +1,335 @@
+/* ============================================================
+   booking-2026.css — Conversion layer
+   Loaded AFTER home-2026.css on every public page. Two jobs:
+
+     1. READABILITY PASS. The editorial styling leaned on
+        font-weight:300 plus low opacity for hierarchy. On a cream
+        background that put most body copy under WCAG AA and made
+        the page hard work for the 30–55 audience. Everything below
+        trades that for real weight and real colour.
+
+     2. BOOKING FUNNEL. New homepage sections + a sticky mobile
+        CTA bar, all pointing at one action: book the ₹499 call.
+   ============================================================ */
+
+:root{
+  /* Solid inks replace the old opacity-based hierarchy.
+     --ink-body on --cream is ~11:1; --ink-quiet is ~6:1. */
+  --ink-body:  #2C3B33;
+  --ink-quiet: #55635A;
+  --ink-on-dark:       rgba(255,255,255,.94);
+  --ink-on-dark-quiet: rgba(255,255,255,.80);
+}
+
+/* ── 1. READABILITY PASS ──────────────────────────────────── */
+
+/* Base copy up from ~16/300 to 17.5/400. */
+.h26{font-size:17.5px;font-weight:400;line-height:1.7;color:var(--ink-body)}
+
+/* Serif headings carry real weight so they hold the page. */
+.h26 h1,.h26 h2,.h26 h3{font-weight:600;color:var(--forest);letter-spacing:-.015em}
+.h26 h1 b,.h26 h2 b,.h26 h3 b{font-weight:700}
+.dark h2,.dark h3,.book h2,.pill .cap h2,.fg-cap h2,.showcase .sc-t h2{color:var(--ch)}
+
+/* No more 300-weight body copy anywhere. */
+.hero .sub,.split .t p,.say .p,.gua p,.prog p,.cos p,.mom .after,
+.about2 .t p,.showcase .sc-t p,.php-hero .sub,.php-card p,
+.pill .p p,.iconrow .ic p,.fq details p,.prog .pl li,.php-pillars li,
+.h26 footer .tag,.h26 footer a,.h26 footer .ft,.paycard .desc,
+.unlock p,.cform .chk span,.cform input,.cform select,.cform textarea,
+.stats .l,.disc{font-weight:400}
+
+/* Real colour instead of opacity for light-background copy. */
+.hero .sub,.split .t p,.say .p,.gua:not(.dark) p,.cos p,.mom .after,
+.about2 .t p,.fq details p,.php-hero .sub,.php-card p,.prog.lt p,
+.php-pillars li,.story p{opacity:1;color:var(--ink-body)}
+
+/* Eyebrows were at .55 opacity — barely visible. */
+.eyebrow{opacity:1;color:var(--gold-text);font-weight:600;font-size:12.5px;letter-spacing:.26em}
+.eyebrow.lt,.book .eyebrow,.pill .cap .eyebrow,.fg-cap .eyebrow{color:var(--ch)}
+
+/* Dark sections: white at 88% reads grey. Lift it. */
+.dark p,.pill .p p,.showcase .sc-t p,.paycard .desc,.unlock p,
+.band-quote p,.gua.dark p{color:var(--ink-on-dark)}
+.fg-l,.stats .l,.ripple-copy .who,.band-quote .who{color:var(--ink-on-dark-quiet)}
+.h26 footer{color:var(--ink-on-dark-quiet)}
+.h26 footer a{color:rgba(255,255,255,.86)}
+.h26 footer .cp{opacity:.68}
+.disc{opacity:.62}
+
+/* Bigger body copy in the places that carry the argument. */
+.say .p{font-size:18.5px;line-height:1.75;max-width:620px}
+.gua p{font-size:18px}
+.hero .sub{font-size:clamp(16.5px,1.8vw,19.5px);line-height:1.75;max-width:500px}
+.hero .sub b{font-weight:600}
+.split .t p,.about2 .t p{font-size:17px;line-height:1.75}
+.fq details p{font-size:17px;line-height:1.75}
+.fq summary{font-size:22px;font-weight:600}
+.pill .p p{font-size:15px}
+.pill .p h3{font-size:13.5px;font-weight:600;letter-spacing:.16em}
+.prog p,.php-card p{font-size:16px}
+.prog .pl li{font-size:15.5px}
+.php-pillars li{font-size:16.5px}
+.story p{font-size:20px;font-weight:500;font-style:normal;line-height:1.6}
+.story .by{opacity:.85;font-weight:600;color:var(--gold-text)}
+.h26 footer a,.h26 footer .ft,.h26 footer .tag{font-size:15px}
+
+/* Buttons: bigger tap target, heavier label. */
+.h26 .btn{font-size:13.5px;font-weight:600;letter-spacing:.1em;padding:19px 36px}
+.h26 .btn-em{background:var(--forest);color:#fff;border-color:var(--forest)}
+.h26 .btn-em:hover{color:var(--ch)}
+.h26 .btn-ch{color:var(--forest-deep);font-weight:700}
+.h26 .lnk{font-size:13.5px;font-weight:600}
+
+/* Nav: readable at a glance. */
+.nl a{font-size:12.5px;font-weight:500;opacity:.9;color:var(--ink-body)}
+.nl a:hover{opacity:1;color:var(--forest)}
+.ncta{background:var(--forest);color:#fff!important;border-color:var(--forest);font-weight:600;
+  font-size:12px;letter-spacing:.1em;padding:13px 20px;white-space:nowrap}
+.ncta:hover{background:var(--forest-deep);color:var(--ch)!important}
+.mobile-nav a{font-size:14px;font-weight:500}
+
+/* ── 2. BOOKING FUNNEL ────────────────────────────────────── */
+
+/* Hero: price + proof strip under the CTA. */
+.hero h1{font-size:clamp(36px,5.1vw,64px);max-width:16ch;line-height:1.04}
+.hero .acts{display:flex;flex-direction:column;align-items:flex-start;gap:16px;margin-top:34px}
+.hero .acts .btn{box-shadow:0 18px 40px -22px rgba(21,66,48,.75)}
+
+.trustline{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:14.5px;
+  font-weight:500;color:var(--ink-quiet)}
+.trustline b{font-weight:700;color:var(--forest)}
+.trustline i{font-style:normal;color:var(--gold-deep)}
+
+/* ── "What you get on the call" cards ── */
+.deliv{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(16px,2.2vw,26px);
+  margin-top:clamp(34px,4.4vw,48px);text-align:left}
+@media(max-width:880px){.deliv{grid-template-columns:1fr;max-width:520px;margin-left:auto;margin-right:auto}}
+.deliv .d{background:var(--cream-lift);border:1px solid rgba(199,172,109,.55);
+  border-top:4px solid var(--gold-deep);padding:clamp(26px,3vw,34px);
+  transition:transform .35s var(--ease-out),box-shadow .35s var(--ease-out)}
+.deliv .d:hover{transform:translateY(-5px);box-shadow:0 34px 60px -44px rgba(21,66,48,.6)}
+.deliv .n{font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.2em;
+  color:var(--gold-text);text-transform:uppercase}
+.deliv h3{font-size:clamp(22px,2.5vw,27px);line-height:1.2;margin-top:12px}
+.deliv p{font-size:16.5px;line-height:1.7;margin-top:12px;color:var(--ink-body)}
+
+/* ── "No pitch" reassurance block ── */
+.nopitch{max-width:660px;margin:clamp(30px,4vw,44px) auto 0;background:var(--forest);
+  color:var(--ink-on-dark);padding:clamp(26px,3.4vw,36px);text-align:left;
+  border-left:4px solid var(--ch)}
+.nopitch h3{color:var(--ch);font-size:clamp(20px,2.4vw,26px);line-height:1.25}
+.nopitch p{font-size:16.5px;line-height:1.75;margin-top:12px;color:var(--ink-on-dark)}
+.nopitch p b{color:#fff;font-weight:600}
+
+/* ── "Is this you?" checklist ── */
+.isyou{list-style:none;max-width:760px;margin:clamp(30px,4vw,44px) auto 0;text-align:left}
+.isyou li{position:relative;padding:18px 0 18px 46px;border-bottom:1px solid rgba(199,172,109,.45);
+  font-size:17.5px;line-height:1.65;color:var(--ink-body)}
+.isyou li:last-child{border-bottom:none}
+.isyou li b{font-weight:700;color:var(--forest)}
+.isyou li:before{content:"✓";position:absolute;left:0;top:19px;width:26px;height:26px;
+  border-radius:50%;background:var(--forest);color:var(--ch);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;line-height:1}
+
+/* ══ "Who you'll be talking to" ══
+   Copy left, portrait right, with a nameplate breaking out over the
+   photo's lower-left corner. Text-heavy column is the wider one so the
+   headline gets to run big. */
+.whome{display:grid;grid-template-columns:1.08fr .92fr;gap:clamp(34px,5vw,72px);
+  align-items:center;margin:clamp(30px,4vw,46px) 0 0;text-align:left}
+@media(max-width:900px){
+  .whome{grid-template-columns:1fr;gap:clamp(34px,6vw,48px);justify-items:center;text-align:center}
+  /* justify-items:center shrink-wraps grid items — pin the copy column
+     back to full width so the paragraphs don't size to max-content. */
+  .whome-t{width:100%;max-width:620px}
+}
+
+/* Eyebrow gets a single leading rule instead of the centred pair. */
+.say .whome .eyebrow.lead-rule{display:inline-flex;align-items:center;gap:14px;padding:0}
+.say .whome .eyebrow.lead-rule:before{content:"";position:static;width:36px;height:1px;
+  background:var(--ch);opacity:.85;flex:none}
+.say .whome .eyebrow.lead-rule:after{display:none}
+@media(max-width:900px){.say .whome .eyebrow.lead-rule:before{display:none}}
+
+/* The headline: roman on top, gold italic underneath. */
+.whome h2{font-size:clamp(32px,4.4vw,56px);line-height:1.06;margin-top:20px;
+  max-width:none;color:#fff;letter-spacing:-.02em}
+.whome h2 em{font-style:italic;font-weight:600;color:var(--ch);display:inline-block}
+.whome p{font-size:17px;line-height:1.75;margin-top:18px;max-width:50ch;color:var(--ink-body)}
+/* Scoped one level deeper than `.whome p` so it wins regardless of source order. */
+.dark .whome p{color:var(--ink-on-dark)}
+.dark .whome p b{color:#fff;font-weight:600}
+@media(max-width:900px){.whome p{margin-left:auto;margin-right:auto}}
+
+.credrow{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px}
+@media(max-width:900px){.credrow{justify-content:center}}
+.credrow span{font-size:13px;font-weight:600;letter-spacing:.03em;
+  background:rgba(230,211,163,.12);border:1px solid rgba(230,211,163,.45);
+  color:var(--ch);padding:8px 15px;border-radius:100px}
+.whome-cta{margin-top:30px}
+@media(max-width:900px){.whome-cta .btn{width:auto}}
+
+/* Portrait + nameplate. Padding on the wrapper reserves the room the
+   plate breaks out into, so it never collides with the grid gap. */
+.whome-m{position:relative;width:100%;max-width:440px;padding:0 0 30px 22px}
+@media(max-width:900px){.whome-m{max-width:min(400px,84vw)}}
+.whome-pic{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:16px;
+  background:var(--sa);border:1px solid rgba(230,211,163,.32);
+  box-shadow:0 50px 90px -50px rgba(0,0,0,.85)}
+.whome-pic:after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(11,36,25,0) 52%,rgba(11,36,25,.45))}
+.whome-pic img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block}
+
+.nameplate{position:absolute;left:0;bottom:0;z-index:2;background:var(--cream);
+  border-radius:12px;padding:16px 24px;box-shadow:0 26px 50px -26px rgba(0,0,0,.6);
+  border-left:3px solid var(--gold-deep);max-width:78%}
+.nameplate b{display:block;font-family:var(--serif);font-weight:700;
+  font-size:clamp(21px,2.3vw,27px);line-height:1.1;color:var(--forest)}
+.nameplate span{display:block;margin-top:5px;font-size:11.5px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--gold-text)}
+@media(max-width:520px){
+  .whome-m{padding-left:14px;padding-bottom:26px}
+  .nameplate{padding:13px 18px;max-width:86%}
+}
+
+/* ══ HOW IT WORKS — three moves ══
+   Sits between the headline and the card so the card isn't the only
+   thing carrying the section. The connecting hairline runs behind the
+   numerals on desktop only. */
+.steps{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);
+  gap:clamp(18px,2.6vw,34px);max-width:900px;margin:clamp(32px,4.2vw,48px) auto 0;
+  position:relative;text-align:center}
+.steps:before{content:"";position:absolute;top:23px;left:16%;right:16%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(230,211,163,.45) 12%,
+    rgba(230,211,163,.45) 88%,transparent)}
+@media(max-width:720px){
+  .steps{grid-template-columns:1fr;gap:22px;max-width:340px;text-align:left}
+  .steps:before{display:none}
+  .steps li{display:grid;grid-template-columns:auto 1fr;column-gap:16px;align-items:center}
+  .steps .s-n{grid-row:span 2;margin:0}
+}
+.steps li{position:relative}
+.steps .s-n{display:flex;align-items:center;justify-content:center;width:42px;height:42px;
+  margin:0 auto 13px;border-radius:50%;background:var(--forest);
+  border:1px solid rgba(230,211,163,.42);font-family:var(--serif);font-weight:600;
+  font-size:19px;color:var(--ch);position:relative;z-index:1;
+  transition:border-color .4s ease,transform .4s var(--ease-out)}
+.steps li:hover .s-n{border-color:var(--ch);transform:translateY(-2px)}
+.steps b{display:block;font-size:15.5px;font-weight:600;color:rgba(255,255,255,.94);line-height:1.3}
+.steps .s-d{display:block;margin-top:5px;font-size:13.5px;line-height:1.5;
+  color:rgba(255,255,255,.6)}
+
+/* ══ THE PRICE CARD ══
+   Solid warm paper sitting on the forest. The previous version was a 5%
+   white tint on a dark ground, which read as barely-there — this is meant
+   to feel like a physical ticket you could pick up. */
+/* Square corners and a gold top rule, matching the .deliv cards further up
+   the page, so this reads as the same family rather than a special guest. */
+.paycard2{max-width:820px;margin:clamp(34px,4.6vw,54px) auto 0;background:var(--cream);
+  border:1px solid rgba(199,172,109,.5);border-top:4px solid var(--gold-deep);
+  border-radius:3px;overflow:hidden;text-align:left;position:relative;
+  box-shadow:0 44px 84px -54px rgba(0,0,0,.6)}
+
+/* Header is type on paper with a hairline under it — no colour band. */
+.pc-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+  flex-wrap:wrap;padding:clamp(20px,2.6vw,26px) clamp(24px,3.4vw,38px) clamp(16px,2vw,20px);
+  border-bottom:1px solid rgba(199,172,109,.4)}
+.pc-kicker{font-family:var(--serif);font-weight:600;font-size:clamp(20px,2.3vw,26px);
+  color:var(--forest);line-height:1.1}
+.pc-dur{font-size:11.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--gold-text)}
+
+.pc-body{display:grid;grid-template-columns:1.12fr .88fr}
+@media(max-width:760px){.pc-body{grid-template-columns:1fr}}
+
+/* Left: the value stack. */
+.pc-list{padding:clamp(26px,3.4vw,38px) clamp(24px,3.4vw,40px)}
+.pc-list h3{font-family:var(--sans);font-size:11.5px;font-weight:700;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--gold-text)}
+.pc-list ul{list-style:none;margin-top:18px}
+.pc-list li{position:relative;padding:11px 0 11px 32px;font-size:16px;line-height:1.6;
+  color:var(--ink-body);border-bottom:1px solid rgba(199,172,109,.28)}
+.pc-list li:last-child{border-bottom:none}
+.pc-list li:before{content:"✓";position:absolute;left:0;top:10px;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;border-radius:50%;
+  background:rgba(21,66,48,.09);color:var(--forest);font-size:11px;font-weight:700}
+
+/* Right: the buy panel. A plain hairline and the faintest warm wash — the
+   dashed "tear-off stub" edge was novelty the rest of the page doesn't speak. */
+.pc-buy{padding:clamp(26px,3.4vw,36px) clamp(24px,3.4vw,38px);
+  background:rgba(199,172,109,.07);border-left:1px solid rgba(199,172,109,.4);
+  text-align:center;position:relative;display:flex;flex-direction:column;justify-content:center}
+@media(max-width:760px){
+  .pc-buy{border-left:none;border-top:1px solid rgba(199,172,109,.4)}
+}
+
+.pc-price{font-family:var(--serif);font-weight:700;font-size:clamp(46px,6vw,62px);
+  line-height:.95;color:var(--forest);letter-spacing:-.015em}
+.pc-price .cur{font-size:.55em;vertical-align:.2em;margin-right:2px;color:var(--gold-text)}
+.pc-note{font-size:13.5px;line-height:1.55;color:var(--ink-quiet);margin-top:11px}
+/* Carries .btn-em so it keeps the shimmer sweep and hover glow. */
+.pc-buy .go{margin-top:20px}
+.pc-buy .go .btn{width:100%;padding:19px 22px;font-size:13.5px}
+/* One quiet line rather than a row of pills plus a lock line. */
+.pc-methods{margin-top:14px;font-size:12px;font-weight:500;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--gold-text)}
+.pc-methods span:not(:last-child):after{content:" · ";color:rgba(160,131,59,.55)}
+.pc-secure{display:inline-flex;align-items:center;justify-content:center;gap:7px;margin-top:9px;
+  font-size:12px;font-weight:500;letter-spacing:.03em;color:var(--ink-quiet)}
+.pc-secure svg{width:13px;height:13px;flex:none}
+
+/* ── Tucked-away enquiry form ── */
+.askfirst{max-width:620px;margin:clamp(32px,4vw,46px) auto 0;text-align:left}
+.askfirst > summary{list-style:none;cursor:pointer;text-align:center;font-size:15px;font-weight:600;
+  letter-spacing:.04em;color:var(--ch);padding:14px;border:1px dashed rgba(230,211,163,.5)}
+.askfirst > summary::-webkit-details-marker{display:none}
+.askfirst > summary:hover{background:rgba(230,211,163,.08)}
+.askfirst[open] > summary{border-style:solid;border-bottom:none}
+.askfirst .inner{border:1px solid rgba(230,211,163,.5);border-top:none;padding:clamp(22px,3vw,30px)}
+.askfirst .cform{margin-top:0}
+.askfirst .cform label{color:var(--ch);opacity:.85;font-weight:600;font-size:12px}
+.askfirst .cform input,.askfirst .cform select,.askfirst .cform textarea{
+  background:rgba(251,250,246,.06);border-color:rgba(230,211,163,.45);color:#fff}
+.askfirst .cform input::placeholder,.askfirst .cform textarea::placeholder{color:rgba(255,255,255,.45)}
+/* The select sits on a dark fill, but the native dropdown popup does not —
+   force both so options never render white-on-white. */
+.askfirst .cform select option{color:var(--forest);background:#fff}
+.askfirst .chk span{color:var(--ink-on-dark-quiet)}
+.askfirst .err{color:#ffd7c9}
+
+/* ── Sticky mobile CTA bar ── */
+.stickycta{position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;
+  background:var(--forest);border-top:1px solid rgba(230,211,163,.45);
+  padding:11px 14px calc(11px + env(safe-area-inset-bottom));
+  align-items:center;justify-content:space-between;gap:12px;
+  box-shadow:0 -10px 30px -18px rgba(0,0,0,.5)}
+.stickycta .txt{font-size:13px;font-weight:600;line-height:1.35;color:var(--ch)}
+.stickycta .txt small{display:block;font-size:11.5px;font-weight:500;color:rgba(255,255,255,.7)}
+.stickycta .btn{flex:none;width:auto!important;padding:14px 20px!important;font-size:12.5px!important}
+@media(max-width:860px){
+  .stickycta{display:flex}
+  .h26 footer{padding-bottom:96px}
+}
+
+/* ── Mobile refinements ── */
+@media(max-width:640px){
+  .h26{font-size:17px}
+  .hero h1{font-size:clamp(31px,8.4vw,42px);max-width:none;font-weight:700}
+  .hero .acts{align-items:stretch;width:100%}
+  .hero .acts .btn{width:100%}
+  .trustline{justify-content:flex-start;font-size:13.5px;gap:6px 12px}
+  .say h2,.gua h2{max-width:none;font-weight:700}
+  .say .p{font-size:17px}
+  .isyou li{font-size:16.5px;padding-left:40px}
+  .isyou li:before{width:20px;height:20px;top:22px}
+  .deliv p,.nopitch p{font-size:16px}
+  .story p{font-size:18px}
+  .fq summary{font-size:19px;padding-right:30px}
+  .h26 .btn{padding:18px 20px;font-size:13px}
+  .pc-buy .go .btn{font-size:13px;padding:19px 18px}
+  .pc-price{font-size:clamp(52px,15vw,64px)}
+  .pc-list li{font-size:15.5px}
+  .whome h2{font-size:clamp(30px,8vw,40px);font-weight:700}
+}

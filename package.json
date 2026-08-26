@@ -1,0 +1,13 @@
+{
+  "name": "tejal-desae-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Static site plus the serverless functions that gate the assessment behind a paid booking.",
+  "type": "module",
+  "dependencies": {
+    "nodemailer": "^6.9.14"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

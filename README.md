@@ -254,3 +254,43 @@ Already set up for you in `vercel.json`: security headers, HTTPS, image caching,
 ---
 
 *Keep this file with the project — it's the handover guide.*
+
+---
+
+## The assessment
+
+The Expansion Quotient is open to anyone at **tejaldesae.com/assessment**. It
+is the free lead magnet the page itself promises ("Free, always. You'll never
+pay to see your result"), and it is also the prep step for a booked call —
+the thank-you page links to it after payment.
+
+- **Results live in the visitor's own browser.** `assessment.html` writes
+  `tejal_eq_done`, `tejal_scores`, `tejal_top_type` and `tejal_lead_name` to
+  localStorage; `report.html` reads them back. So someone can return to
+  **tejaldesae.com/report** days later on the same browser and their result
+  is still there, with no server involved.
+- **A new device shows nothing**, because there is nowhere else the result
+  is kept. `report.html` handles that by sending them to the assessment
+  rather than rendering an empty page.
+
+### Emailing the link to people who paid
+
+There is no mailer in this repo, so the email has to come from a tool that
+already sends one. Two places, both dashboard settings rather than code:
+
+1. **The booking confirmation** from the scheduling app at
+   `expansioncode.tejaldesae.com`, sent when they pick a slot. This is the
+   natural home for it — "before we speak, take this".
+2. **The Razorpay payment confirmation**, if your plan lets you customise it.
+
+The link to paste in either is just:
+
+    https://tejaldesae.com/assessment
+
+### The magic-link backend (built, not wired up)
+
+`api/` holds a complete Razorpay-webhook → signed-token → emailed-link
+system, from when the plan was to gate these pages. Nothing calls it: the
+assessment is open and the report reads localStorage. It is listed in
+`.vercelignore` so it does not deploy. Delete `api/`, `package.json`,
+`.env.example` and `js/gate.js` if you are sure you never want it.

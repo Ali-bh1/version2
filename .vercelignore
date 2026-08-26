@@ -1,3 +1,12 @@
+# ── Magic-link backend: built, but not in use ──
+# Nothing on the site calls /api any more — the assessment is open to
+# anyone and the report reads the visitor's own localStorage. Excluded so
+# Vercel keeps this a pure static deploy instead of building dead
+# functions. Delete api/ and package.json outright if you never want it.
+api/
+package.json
+.env.example
+
 # ── Backend: never upload to the static host ──
 # server/.env holds DB + CSRF secrets. This must stay excluded.
 server/
@@ -21,9 +30,16 @@ _diag.html
 tejal-homepage-mockup.html
 tejaldesae-website updated.html
 video.html
+_eqrprev.html
 
 # ── Unused source images (originals kept locally; optimised
 #    derivatives tejal-hero/about/garden.jpg are what ship) ──
+images/bgrefe2.png
+images/bgrefr1.jpeg
+images/tdse1.jpeg
+images/tdse2.jpeg
+images/tdse3.jpeg
+images/tdse4.jpeg
 images/poe3.png
 images/por2.png
 images/port1.png

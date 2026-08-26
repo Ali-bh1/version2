@@ -2,7 +2,8 @@
  * nav.js — Inject consistent navbar + mobile menu on every page.
  */
 export function injectNav() {
-  if (document.querySelector('.nav')) return;
+  // Some pages ship their own masthead. Do not stack a second nav on top.
+  if (document.querySelector('.nav, #nav')) return;
 
   const isHome = location.pathname.endsWith('index.html') ||
                  location.pathname === '/' ||
@@ -17,9 +18,8 @@ export function injectNav() {
       <li><a href="${href('#method')}">The Method</a></li>
       <li><a href="${href('#programs')}">Programs</a></li>
       <li><a href="${href('#about')}">About</a></li>
-      <li><a href="assessment.html">Expansion Quotient</a></li>
     </ul>
-    <a href="assessment.html" class="nav-cta" data-specular>Find Your Quotient</a>
+    <a href="index.html#book" class="nav-cta" data-specular>Book a Call</a>
     <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -28,7 +28,6 @@ export function injectNav() {
     <a href="${href('#method')}">The Method</a>
     <a href="${href('#programs')}">Programs</a>
     <a href="${href('#about')}">About</a>
-    <a href="assessment.html">Expansion Quotient</a>
     <a href="${href('#contact')}">Contact</a>
   </div>`;
 

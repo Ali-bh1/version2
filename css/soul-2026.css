@@ -1,0 +1,130 @@
+/* ============================================================
+   soul-2026.css — Atmosphere & motion layer
+   Loaded last. Nothing here changes layout or copy; it only adds
+   texture, light and movement. Every effect is subtle by design
+   and every one of them stands down under prefers-reduced-motion
+   (the global guard lives at the end of this file).
+   ============================================================ */
+
+/* ── FILM GRAIN ──────────────────────────────────────────────
+   A single fixed noise plate over the whole page. This is what
+   stops the large flat cream and forest fields from reading as
+   dead space — it gives the paper a surface. */
+/* z-index sits above page content but below the nav (60) and sticky bar (70),
+   so neither picks up the blend. `overlay` darkens on cream and lifts on
+   forest — one plate that works over both halves of the palette. */
+.grain{position:fixed;inset:0;z-index:55;pointer-events:none;opacity:.055;
+  mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E")}
+
+/* ── AMBIENT LIGHT ───────────────────────────────────────────
+   A slow champagne bloom drifting behind the dark sections, so
+   the forest is lit rather than painted. 26s — slow enough that
+   you feel it without catching it moving. */
+.say.dark,.book{position:relative;overflow:hidden;isolation:isolate}
+.say.dark:before,.book:before{content:"";position:absolute;z-index:-1;
+  left:50%;top:50%;width:min(1200px,150%);aspect-ratio:1;transform:translate(-50%,-50%);
+  pointer-events:none;border-radius:50%;
+  background:radial-gradient(circle,rgba(230,211,163,.15),rgba(230,211,163,0) 63%);
+  animation:auraDrift 26s ease-in-out infinite}
+.book:before{animation-duration:32s;animation-direction:reverse}
+@keyframes auraDrift{
+  0%,100%{transform:translate(-53%,-52%) scale(1)}
+  50%    {transform:translate(-47%,-48%) scale(1.14)}
+}
+
+/* ── HERO: the aura behind her breathes ──────────────────────
+   The portrait already drifts on floatY; this counter-pulses the glow
+   at a different period so the two never sync up and read as a loop. */
+.hero .arch2:before{animation:auraBreathe 11s ease-in-out infinite}
+@keyframes auraBreathe{
+  0%,100%{opacity:.85;transform:scale(1)}
+  50%    {opacity:1;transform:scale(1.06)}
+}
+/* The drawn veins keep a faint shimmer after they finish drawing. */
+.hero .vein path{animation:draw 3.4s var(--ease-out) forwards,veinGlow 9s ease-in-out 3.4s infinite}
+@keyframes veinGlow{0%,100%{opacity:.42}50%{opacity:.72}}
+
+/* ── NAV: settles once you leave the top ─────────────────────*/
+#nav{transition:padding .4s var(--ease-out),background .4s ease,box-shadow .4s ease}
+#nav.scrolled{background:rgba(251,250,246,.96);box-shadow:0 10px 34px -24px rgba(21,66,48,.55)}
+#nav.scrolled .nin{padding-top:9px;padding-bottom:9px}
+.nin{transition:padding .4s var(--ease-out)}
+#nav.scrolled .brand img.lg{width:34px;height:34px}
+.brand img.lg{transition:width .4s var(--ease-out),height .4s var(--ease-out)}
+
+/* Nav links grow a champagne underline rather than just brightening. */
+.nl a:not(.ncta){position:relative;padding-bottom:3px}
+.nl a:not(.ncta):after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+  background:var(--gold-deep);transform:scaleX(0);transform-origin:100% 50%;
+  transition:transform .4s var(--ease-out)}
+.nl a:not(.ncta):hover:after{transform:scaleX(1);transform-origin:0 50%}
+
+/* ── BUTTONS: weight on press, glow on hover ─────────────────*/
+.h26 .btn{transition:transform .32s var(--ease-out),box-shadow .32s var(--ease-out),
+  background .3s ease,color .3s ease}
+.h26 .btn-em:hover{box-shadow:0 20px 44px -20px rgba(21,66,48,.8),0 0 0 1px rgba(230,211,163,.45)}
+.h26 .btn-ch:hover{box-shadow:0 20px 44px -22px rgba(230,211,163,.75),0 0 0 1px rgba(255,255,255,.3)}
+.h26 .btn:active{transform:translateY(0) scale(.985);transition-duration:.09s}
+
+/* ── CARDS: lift into light ──────────────────────────────────*/
+.deliv .d{transition:transform .45s var(--ease-out),box-shadow .45s var(--ease-out),
+  border-color .45s ease,background .45s ease}
+.deliv .d:hover{border-color:var(--gold-deep);background:#fff}
+.deliv .d .n{transition:letter-spacing .45s var(--ease-out)}
+.deliv .d:hover .n{letter-spacing:.28em}
+
+.story{transition:transform .45s var(--ease-out),box-shadow .45s var(--ease-out),
+  border-top-color .45s ease}
+.story:hover{transform:translateY(-6px);border-top-color:var(--gold-deep);
+  box-shadow:0 40px 70px -46px rgba(0,0,0,.75)}
+
+/* ── CHECKLIST: each line answers when you touch it ──────────*/
+.isyou li{transition:padding-left .4s var(--ease-out),color .3s ease}
+.isyou li:hover{padding-left:54px}
+.isyou li:before{transition:transform .4s var(--ease-out),background .3s ease}
+.isyou li:hover:before{transform:scale(1.12) rotate(-6deg);background:var(--gold-deep)}
+
+.credrow span{transition:background .35s ease,border-color .35s ease,transform .35s var(--ease-out)}
+.credrow span:hover{background:rgba(230,211,163,.22);border-color:var(--ch);transform:translateY(-2px)}
+
+/* ── PORTRAIT: wipes up, then the nameplate lands ────────────*/
+html.js .whome-m .whome-pic{clip-path:inset(0 0 100% 0);
+  transition:clip-path 1.15s var(--ease-out)}
+html.js .whome-m.in .whome-pic{clip-path:inset(0 0 0 0)}
+html.js .whome-m .whome-pic img{transform:scale(1.13);
+  transition:transform 2.1s var(--ease-out)}
+html.js .whome-m.in .whome-pic img{transform:scale(1)}
+html.js .whome-m .nameplate{opacity:0;transform:translateY(16px) scale(.95);
+  transition:opacity .7s var(--ease-out) .6s,transform .7s var(--ease-out) .6s}
+html.js .whome-m.in .nameplate{opacity:1;transform:none}
+
+/* ── HAIRLINE: draws itself across the page ──────────────────*/
+.hair{max-width:1060px;margin:0 auto}
+
+/* ── FAQ: the row warms as it opens ──────────────────────────*/
+.fq details{transition:background .35s ease}
+.fq summary{transition:padding-left .35s var(--ease-out)}
+.fq summary:hover{padding-left:6px}
+.fq details[open]{background:rgba(230,211,163,.05)}
+.fq details[open] summary{padding-left:6px}
+.fq details[open] p{animation:faqOpen .5s var(--ease-out)}
+@keyframes faqOpen{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+
+/* ── STICKY BAR: slides up rather than appearing ─────────────*/
+.stickycta{transform:translateY(110%);transition:transform .45s var(--ease-out)}
+.stickycta.up{transform:translateY(0)}
+
+/* ── SCROLL CUE + PROGRESS: warmer ───────────────────────────*/
+.sprog i{transition:transform .12s linear}
+
+/* ── REDUCED MOTION ──────────────────────────────────────────
+   Everything above degrades to a static, fully-legible page. */
+@media(prefers-reduced-motion:reduce){
+  .grain{display:none}
+  .say.dark:before,.book:before{animation:none}
+  html.js .whome-m .whome-pic{clip-path:none!important}
+  html.js .whome-m .whome-pic img{transform:none!important}
+  html.js .whome-m .nameplate{opacity:1!important;transform:none!important}
+  .stickycta{transition:none}
+}

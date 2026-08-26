@@ -25,9 +25,12 @@ src="https://www.facebook.com/tr?id=925766013116755&ev=PageView&noscript=1"
   <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/home-2026.css">
+  <link rel="stylesheet" href="css/booking-2026.css">
+  <link rel="stylesheet" href="css/soul-2026.css">
+  <link rel="stylesheet" href="css/emerald-2026.css">
   <script>document.documentElement.className += ' js';</script>
   <style>
     /* ── Confirmation header ── */
@@ -50,12 +53,16 @@ src="https://www.facebook.com/tr?id=925766013116755&ev=PageView&noscript=1"
     .ty h1{font-family:var(--serif);font-weight:500;font-size:clamp(28px,4.8vw,50px);color:var(--ch);
       line-height:1.08;margin:12px auto 0;max-width:16ch}
     .ty h1 b{font-weight:700}
-    .ty .lead{font-weight:300;font-size:clamp(14px,1.6vw,16.5px);line-height:1.8;color:rgba(255,255,255,.82);
+    .ty .lead{font-weight:400;font-size:clamp(15px,1.7vw,17.5px);line-height:1.75;color:rgba(255,255,255,.92);
       max-width:48ch;margin:16px auto 0}
-    .ty .lead b{font-weight:500;color:#fff}
+    .ty .lead b{font-weight:600;color:#fff}
 
-    /* ── Full-width calendar section ── */
-    .cal-section{background:var(--em, #154230);padding:0 0 clamp(36px,5vw,56px);position:relative}
+    /* ── Full-width calendar section ──
+       z-index lifts the calendar above the fixed .grain plate (z 55).
+       Without this the booking iframe — the one thing this page exists
+       for — renders with noise blended over it. */
+    .cal-section{background:var(--em, #154230);padding:0 0 clamp(36px,5vw,56px);
+      position:relative;z-index:56}
     .cal-section .cal-header{text-align:center;padding:clamp(20px,3vw,32px) 20px clamp(16px,2vw,24px);
       color:var(--ch, #e6d3a3);font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;opacity:.7}
     .cal-section .cal-container{max-width:1100px;margin:0 auto;padding:0 clamp(12px,2vw,24px)}
@@ -92,17 +99,18 @@ src="https://www.facebook.com/tr?id=925766013116755&ev=PageView&noscript=1"
       .cal-section .cal-container{padding:0 4px}
     }
 
-    /* ── Free-quiz strip ── */
+    /* ── "Before we speak" prep strip ── */
     .ty-quiz{background:var(--cream);text-align:center;padding:clamp(46px,6vw,78px) 0}
-    .ty-quiz .eyebrow{opacity:.55}
-    .ty-quiz h2{font-family:var(--serif);font-weight:500;font-size:clamp(26px,3.4vw,40px);color:var(--em);margin:12px auto 0;max-width:18ch}
+    .ty-quiz h2{font-family:var(--serif);font-weight:600;font-size:clamp(26px,3.4vw,40px);color:var(--em);margin:12px auto 0;max-width:18ch}
     .ty-quiz h2 b{font-weight:700}
-    .ty-quiz p{font-weight:300;font-size:15px;opacity:.85;max-width:44ch;margin:16px auto 0;line-height:1.8}
-    .ty-quiz .go{margin-top:28px}
+    .ty-quiz p{font-weight:400;font-size:16.5px;max-width:46ch;margin:16px auto 0;line-height:1.75;color:var(--ink-body)}
     @media(prefers-reduced-motion:reduce){.ty-rings{display:none}.ty .chk{animation:none}}
   </style>
 </head>
-<body class="h26">
+<body class="h26 inv">
+
+  <!-- film grain over the whole page -->
+  <div class="grain" aria-hidden="true"></div>
 
   <!-- ═══════════ NAV ═══════════ -->
   <nav id="nav">
@@ -111,21 +119,12 @@ src="https://www.facebook.com/tr?id=925766013116755&ev=PageView&noscript=1"
         <img class="lg" src="images/ref-logo.png" alt="Tejal Desae monogram">
         <span>Tejal Desae</span>
       </a>
-      <div class="nl">
-        <a href="index.html#moment">The Moment</a>
-        <a href="index.html#method">The Method</a>
-        <a href="index.html#programs">Programs</a>
-        <a href="index.html#about">About</a>
-        <a class="ncta" href="assessment.html">Free Assessment</a>
-      </div>
-      <button class="nav-burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
-    </div>
-    <div class="mobile-nav" hidden>
-      <a href="index.html#moment">The Moment</a>
-      <a href="index.html#method">The Method</a>
-      <a href="index.html#programs">Programs</a>
-      <a href="index.html#about">About</a>
-      <a href="assessment.html">Free Assessment</a>
+      <span class="brand-role">Wealth &amp; Identity Mentor</span>
+      <!-- This person has already paid. No booking CTA anywhere on this page —
+           the only thing left for them to do is pick a slot below. -->
+      <a class="ncta ncta-quiet" href="mailto:hello@tejaldesae.com">
+        <span class="lbl">Need help?</span>
+      </a>
     </div>
   </nav>
 
@@ -156,13 +155,43 @@ src="https://www.facebook.com/tr?id=925766013116755&ev=PageView&noscript=1"
     <p class="cal-note">A confirmation will be sent to your email once booked.</p>
   </section>
 
-  <!-- ═══════════ FREE QUIZ ═══════════ -->
+  <!-- ═══════════ THE ASSESSMENT ═══════════ -->
+  <section class="ty-assess">
+    <div class="seam seam-assess" aria-hidden="true"></div>
+    <div class="nar">
+      <span class="eyebrow">While you're here</span>
+      <h2>Take the Expansion Quotient before we speak.</h2>
+      <p class="lead">Eight questions, about two minutes. It names the pattern that runs
+      underneath your asking — and I'll have read your result before you join the call,
+      so we start already knowing where to look.</p>
+
+      <div class="assess-card">
+        <div class="ac-body">
+          <span class="ac-kicker">The Expansion Quotient</span>
+          <ul class="ac-list">
+            <li>8 questions, roughly 2 minutes</li>
+            <li>Your result and full report, straight away</li>
+            <li>Nothing to sign up for, nothing to pay</li>
+            <li>I read it before we speak</li>
+          </ul>
+        </div>
+        <div class="ac-go">
+          <a class="btn btn-em" href="/expansion-quotient-t1uqlm">Start the assessment →</a>
+          <p class="ac-link">The same link is in your confirmation email —
+          keep that email and you can come back to this any time.</p>
+          <a class="ac-later" href="/expansion-result-t1uqlm">Already done it? See my result</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ HOW TO PREPARE ═══════════ -->
   <section class="ty-quiz">
     <div class="nar">
-      <span class="eyebrow">While you're here — free</span>
-      <h2>Find your <b>Expansion Quotient</b> before we speak.</h2>
-      <p>Two minutes, eight questions, and you'll walk into our call already knowing the exact pattern we're there to shift. It's free, always.</p>
-      <div class="go"><a class="btn btn-em" href="assessment.html">Find your Expansion Quotient →</a></div>
+      <span class="eyebrow">Before we speak</span>
+      <h2>Three minutes of prep, and we go <b>much</b> deeper.</h2>
+      <p>Come with one specific example in mind — the last time you softened a number, took a lower rate, or didn't ask at all. Bring what you actually earn now and what you believe the work is worth. That's all. We'll do the rest together on the call.</p>
+      <p style="margin-top:18px">Need to move your slot? Email <a href="mailto:hello@tejaldesae.com" style="display:inline;border-bottom:1px solid var(--gold-deep)">hello@tejaldesae.com</a> at least 24 hours ahead.</p>
     </div>
   </section>
 
@@ -172,10 +201,10 @@ src="https://www.facebook.com/tr?id=925766013116755&ev=PageView&noscript=1"
       <div class="fg">
         <div>
           <div class="brand"><img class="lg" src="images/ref-logo.png" alt="Tejal Desae monogram"><span>Tejal Desae</span></div>
-          <p class="tag">Wealth &amp; Identity Mentor.<br>The era of quiet excellence is over.</p>
+          <p class="tag">Wealth &amp; Identity Mentor.<br>Helping people who are brilliant at the work finally get paid for it.</p>
         </div>
-        <div><h4>Explore</h4><a href="index.html#moment">The Moment</a><a href="index.html#method">The Method</a><a href="index.html#programs">Programs</a><a href="index.html#about">About</a></div>
-        <div><h4>Start</h4><a href="assessment.html">Expansion Quotient</a><a href="wealth-expansion-code.html">Wealth Expansion Code</a><a href="business-expansion-code.html">Business Expansion Code</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms &amp; Conditions</a><a href="refund-policy.html">Refund &amp; Cancellation</a></div>
+        <div><h4>Your Call</h4><a href="index.html#call">What you get on the call</a><a href="index.html#proof">About Tejal</a><a href="mailto:hello@tejaldesae.com">Reschedule or ask a question</a><a href="refund-policy.html">Reschedule policy</a></div>
+        <div><h4>Programmes</h4><a href="wealth-expansion-code.html">Wealth Expansion Code</a><a href="business-expansion-code.html">Business Expansion Code</a><a href="privacy-policy.html">Privacy Policy</a><a href="terms.html">Terms &amp; Conditions</a><a href="refund-policy.html">Refund &amp; Cancellation</a></div>
         <div><h4>Contact</h4>
           <p class="ft">Bangalore, India</p>
           <p class="ft"><a href="mailto:hello@tejaldesae.com" style="display:inline">hello@tejaldesae.com</a></p>

@@ -50,6 +50,36 @@
     document.querySelectorAll('[data-split]').forEach(splitWords);
   }
 
+  /* ── Auto-stagger ──
+     Marks every child of a [data-stagger] container as a reveal and
+     hands it an increasing transition-delay, so lists and card rows
+     arrive in sequence instead of all at once. Inline styles are used
+     deliberately: they beat the .reveal-d1…d4 delay classes without
+     fighting them in the stylesheet.
+     MUST run before initReveals so the observer sees the new nodes. */
+  function initStagger() {
+    document.querySelectorAll('[data-stagger]').forEach(function (box) {
+      var step = parseInt(box.dataset.stagger, 10) || 90;
+      Array.prototype.forEach.call(box.children, function (el, i) {
+        el.classList.add('reveal');
+        if (!reduced) el.style.transitionDelay = (i * step) + 'ms';
+      });
+    });
+  }
+
+  /* ── Nav settles once you leave the top of the page ── */
+  function initNavScroll() {
+    var nav = document.getElementById('nav');
+    if (!nav) return;
+    var on = false;
+    function upd() {
+      var next = window.scrollY > 24;
+      if (next !== on) { on = next; nav.classList.toggle('scrolled', on); }
+    }
+    window.addEventListener('scroll', upd, { passive: true });
+    upd();
+  }
+
   /* ── Scroll reveal (text, figures, hairlines, headlines) ── */
   function initReveals() {
     var els = document.querySelectorAll('.reveal, .fig, .hair, .split-w');
@@ -203,43 +233,70 @@
     });
   }
 
-  /* ── Program page: payment + quiz gate ── */
+  /* ── Program page: post-payment thank-you ──
+     Courtesy screen only. It shows when Razorpay redirects back with
+     ?paid=1 after a real checkout — a static page cannot verify payment,
+     so Razorpay stays the source of truth for the booking itself. */
   function initBooking() {
     var book = document.querySelector('.book[data-program]');
     if (!book) return;
 
-    var slug = book.getAttribute('data-program');
-    var quizDone = localStorage.getItem('tejal_eq_done') === '1';
-
-    // The quiz is free and public, so this is a courtesy thank-you — NOT a
-    // paywall. It shows only when Razorpay itself redirects back with
-    // ?paid=1 after a real checkout. (A static page cannot verify payment;
-    // Razorpay is the source of truth for the booking.)
     var params = new URLSearchParams(location.search);
     if (params.get('paid') !== '1') return;
     history.replaceState(null, '', location.pathname + location.hash);
 
     var unlock = book.querySelector('.unlock');
-    var unlockBtn = book.querySelector('[data-unlock-btn]');
-    var unlockText = book.querySelector('[data-unlock-text]');
-
     book.classList.add('paid');
     if (unlock) unlock.classList.add('on');
-    if (quizDone) {
-      if (unlockText) unlockText.textContent = 'I’ll be in touch to schedule it. You’ve already found your Expansion Quotient — revisit it any time before we speak.';
-      if (unlockBtn) {
-        unlockBtn.textContent = 'See your results →';
-        var id = localStorage.getItem('tejal_submission_id');
-        unlockBtn.href = id ? ('report.html?id=' + encodeURIComponent(id)) : 'report.html';
-      }
-    } else if (unlockBtn) {
-      unlockBtn.href = 'assessment.html?program=' + encodeURIComponent(slug);
+  }
+
+  /* ── Meta Pixel: fire InitiateCheckout when someone opens Razorpay ──
+     Lets the ads that drive this traffic optimise for booking intent
+     rather than raw page views. */
+  function initPayTracking() {
+    document.querySelectorAll('[data-pay]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (typeof window.fbq === 'function') {
+          window.fbq('track', 'InitiateCheckout', {
+            content_name: 'Clarity Call',
+            value: 499,
+            currency: 'INR'
+          });
+        }
+      });
+    });
+  }
+
+  /* ── Sticky mobile CTA ──
+     Slides up once you're past the hero, and stands down again while
+     the booking card itself is on screen. The bar parks off-canvas in
+     CSS, so it never flashes before this runs. */
+  function initStickyCta() {
+    var bar = document.querySelector('.stickycta');
+    if (!bar) return;
+    if (!('IntersectionObserver' in window)) { bar.classList.add('up'); return; }
+
+    var book = document.getElementById('book');
+    var atBook = false;
+
+    function sync() {
+      bar.classList.toggle('up', window.scrollY > window.innerHeight * 0.6 && !atBook);
     }
+    if (book) {
+      new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { atBook = e.isIntersecting; });
+        sync();
+      }, { threshold: 0.08 }).observe(book);
+    }
+    window.addEventListener('scroll', sync, { passive: true });
+    sync();
   }
 
   function boot() {
     initFallbacks();
     initSplits();
+    initStagger();   // must precede initReveals — it creates .reveal nodes
+    initNavScroll();
     initReveals();
     initParallax();
     initCounters();
@@ -247,6 +304,8 @@
     initNav();
     initContact();
     initBooking();
+    initPayTracking();
+    initStickyCta();
   }
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', boot);

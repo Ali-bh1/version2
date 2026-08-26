@@ -1,0 +1,1019 @@
+/* ============================================================
+   emerald-2026.css — the inverted scheme.
+
+   Emerald is the ground; champagne is the one light band left.
+   Loaded last, scoped to `.h26.inv`, so the programme pages that
+   share home-2026.css keep the old cream-dominant treatment.
+   ============================================================ */
+
+.h26.inv{
+  /* surfaces */
+  --ground:      #061C13;   /* deepest — footer, page ground   */
+  --band:        #0A2C1F;   /* section ground                  */
+  --panel:       rgba(255,255,255,.055);
+  --panel-line:  rgba(199,172,109,.62);
+  --panel-line-s:rgba(199,172,109,.34);
+  /* text on emerald */
+  --on-green:    #F4F1EA;
+  --on-green-q:  #CFD6CE;
+
+  background-color:var(--ground);
+  color:#fff;
+}
+
+/* ── The ground ─────────────────────────────────────────────
+   The gold linework is SVG, so it stays sharp at any size and any pixel
+   density — a 1280px JPEG stretched over a 1200-tall band was a 2–3×
+   upscale, which is what made the old marble read as blurry.
+
+   The fade behind the text column is baked into the SVG as a luminance
+   mask rather than layered on in CSS, so the artwork can run at full
+   strength out at the edges instead of being washed flat everywhere.
+
+   The ground under it is a plain vertical gradient. No radial pools of
+   light — those read as glow, and they were competing with the linework
+   for the same attention. */
+.h26.inv .hero,
+.h26.inv .say.cream,
+.h26.inv .say.dark,
+.h26.inv .book{
+  background-color:var(--band);
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  color:var(--on-green);
+  isolation:isolate;
+}
+.h26.inv .hero{
+  background-image:
+    linear-gradient(180deg, #0F3F2E 0%, #0A2C1F 56%, #072016 100%);
+  background-position:center;
+}
+.h26.inv .say.cream{
+  background-image:
+    linear-gradient(180deg, #14503B 0%, #0C3122 40%, #0A2719 100%);
+  background-position:center;
+}
+.h26.inv .say.dark{
+  background-image:
+    linear-gradient(180deg, #0A2719 0%, #0F3C2B 48%, #0A2D1F 100%);
+  background-position:center;
+}
+.h26.inv .book{
+  background-image:
+    linear-gradient(180deg, #134A36 0%, #0C3324 42%, #0A2A1D 100%);
+  background-position:center;
+}
+
+/* The one light band left on the page — same linework, deeper gold. */
+.h26.inv .say.sand{
+  background-color:var(--sa);
+  background-image:linear-gradient(176deg, #F1E8D6 0%, #E7DCC5 58%, #DCCFB4 100%);
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  background-position:center;
+  isolation:isolate;
+}
+
+/* The old hand-drawn hero veins now fight the marble. */
+.h26.inv .hero .vein{display:none}
+
+/* ── No glows ───────────────────────────────────────────────
+   Three inherited light sources were sitting under the page: a drifting
+   gold aura behind the dark bands (soul-2026.css), a second one in the
+   hero behind the portrait, and one more on the figures block. They read
+   as haze rather than light, and they were the reason the linework
+   looked washed out. The gradient ground and the strokes do the work
+   now. */
+.h26.inv .hero .arch2:before,
+.h26.inv .figures:before,
+.h26.inv .ripple:before{content:none!important}
+/* soul-2026.css animates .say.dark:before / .book:before as a drifting gold
+   aura. That pseudo-element is reused below for the wave layer, so its
+   animation and geometry are both replaced rather than merely hidden. */
+
+
+/* ── The waves, adrift ─────────────────────────────────────
+   The linework lives on its own layer so it can move without the page
+   repainting: the scale is fixed, only the translate animates, which
+   keeps the whole thing on the compositor.
+
+   The periods are deliberately unequal and prime-ish, so no two bands
+   ever come back into step — the movement should never resolve into a
+   pulse you can count. It is a drift of a percent or two over the best
+   part of a minute; you should notice it only if you stop and look. */
+.h26.inv .hero:before,
+.h26.inv .say.cream:before,
+.h26.inv .say.dark:before,
+.h26.inv .book:before,
+.h26.inv .say.sand:before{
+  content:"";
+  position:absolute;inset:0;z-index:-1;
+  pointer-events:none;
+  background-image:url(../images/gold-waves.svg);
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center;
+  transform:scale(1.1) translate3d(0,0,0);
+  will-change:transform;
+  animation:waveDrift 47s ease-in-out infinite;
+}
+.h26.inv .say.cream:before{background-position:left 30% bottom;animation-duration:59s;animation-delay:-11s}
+.h26.inv .say.dark:before {background-position:right 20% center;animation-duration:53s;animation-delay:-23s}
+.h26.inv .book:before     {background-position:left top;animation-duration:61s;animation-delay:-7s}
+.h26.inv .say.sand:before {
+  background-image:url(../images/gold-waves-warm.svg);
+  background-position:right 24% center;
+  animation-duration:67s;animation-delay:-31s;
+}
+
+@keyframes waveDrift{
+  0%   {transform:scale(1.1) translate3d(0,       0,      0)}
+  50%  {transform:scale(1.1) translate3d(-1.6%,   0.9%,   0)}
+  100% {transform:scale(1.1) translate3d(0,       0,      0)}
+}
+@media(prefers-reduced-motion:reduce){
+  .h26.inv .hero:before,
+  .h26.inv .say.cream:before,
+  .h26.inv .say.dark:before,
+  .h26.inv .book:before,
+  .h26.inv .say.sand:before{animation:none}
+}
+
+/* ── Section seams ─────────────────────────────────────────
+   Two places on the page change ground colour outright, and a butt join
+   between two flat fields is where the artwork looked like it repeated.
+   A drawn wave carries one band into the next, with the same triple-line
+   gold edge the background linework uses, and a lozenge sitting on the
+   crossing.
+
+   The consecutive green bands are handled differently — their gradients
+   now start and end on the same tone, so they read as one continuous
+   ground and need no seam at all. */
+.h26.inv .say,
+.h26.inv .book,
+.h26.inv .hero{position:relative}
+
+.h26.inv .seam{
+  position:absolute;left:0;right:0;bottom:-1px;
+  height:clamp(46px,5.6vw,84px);
+  z-index:3;pointer-events:none;
+  background-repeat:no-repeat;
+  background-position:center bottom;
+  background-size:100% 100%;
+}
+.h26.inv .seam-to-sand {background-image:url(../images/seam-sand.svg)}
+.h26.inv .seam-to-green{background-image:url(../images/seam-green.svg)}
+/* green ➝ green: the wave carries the next band's tone up over this one, so
+   the edge is a change in depth rather than a change in colour */
+.h26.inv .seam-g1{background-image:url(../images/seam-g1.svg)}
+.h26.inv .seam-g2{background-image:url(../images/seam-g2.svg)}
+.h26.inv .seam-g3{background-image:url(../images/seam-g3.svg)}
+
+/* the lozenge that marks the crossing */
+.h26.inv .seam:after{
+  content:"";
+  position:absolute;left:50%;bottom:8px;
+  width:9px;height:9px;
+  margin-left:-4.5px;
+  background:var(--gold-deep);
+  transform:rotate(45deg) scale(.4);
+  opacity:0;
+  transition:transform .7s var(--ease-out) .12s, opacity .5s ease .12s;
+}
+.h26.inv .seam-to-sand:after{background:#A8853F}
+.h26.inv .seam-g3:after{background:#B8985A}
+html.js .h26.inv .seam.in:after{transform:rotate(45deg) scale(1);opacity:1}
+/* without JS the observer never runs — show it outright */
+html:not(.js) .h26.inv .seam:after{transform:rotate(45deg) scale(1);opacity:1}
+
+/* the seam eats into the band below it, so give that band room to breathe */
+.h26.inv .say.sand,
+.h26.inv .say.dark,
+.h26.inv .say.cream,
+.h26.inv .book{padding-top:clamp(70px,8.5vw,118px)}
+.h26.inv footer{padding-top:clamp(48px,6vw,76px)}
+
+/* the hero content was sitting right on top of its own wave */
+.h26.inv .hero .g{padding-bottom:clamp(92px,10vw,150px)}
+.h26.inv .hero .cue{bottom:clamp(74px,8.5vw,118px);z-index:4}
+@media(prefers-reduced-motion:reduce){
+  .h26.inv .seam:after{transition:none;transform:rotate(45deg) scale(1);opacity:1}
+}
+
+/* ── NAV ────────────────────────────────────────────────────
+   The bar was doing nothing but holding a logo at one end and a button
+   at the other, with a flat 1px rule under it — thin next to everything
+   below it. Three changes: the ground gets the same depth as the bands,
+   the rule becomes a gold hairline that fades out at both edges the way
+   the seam lines do, and the empty middle picks up the role line so the
+   lockup reads as a masthead rather than a stranded logo. */
+.h26.inv nav{
+  background:linear-gradient(180deg, rgba(8,32,22,.92), rgba(6,26,18,.88));
+  -webkit-backdrop-filter:blur(16px) saturate(1.1);
+          backdrop-filter:blur(16px) saturate(1.1);
+  border-bottom:none;
+  position:sticky;top:0;z-index:60;
+}
+/* the hairline, fading at both ends */
+.h26.inv nav:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,
+    rgba(199,172,109,0) 0%,
+    rgba(199,172,109,.55) 16%,
+    rgba(230,211,163,.8) 50%,
+    rgba(199,172,109,.55) 84%,
+    rgba(199,172,109,0) 100%);
+  pointer-events:none;
+}
+.h26.inv #nav.scrolled{
+  background:linear-gradient(180deg, rgba(6,26,18,.97), rgba(5,22,15,.95));
+  box-shadow:0 14px 34px -26px rgba(0,0,0,.9);
+}
+
+.h26.inv .nin{gap:clamp(16px,3vw,34px)}
+.h26.inv .brand{gap:14px;align-items:center}
+.h26.inv .brand img.lg{
+  width:40px;height:40px;
+  transition:transform .4s var(--ease-out);
+}
+.h26.inv .brand:hover img.lg{transform:rotate(-6deg) scale(1.04)}
+.h26.inv .brand span{
+  color:#F0DFAF;font-size:21px;font-weight:600;letter-spacing:.05em;
+}
+
+/* the role line sits between the name and the CTA, behind its own rule */
+.h26.inv .brand-role{
+  display:flex;align-items:center;gap:14px;
+  margin-right:auto;
+  font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;
+  color:#B99A5C;white-space:nowrap;
+}
+.h26.inv .brand-role:before{
+  content:"";width:clamp(18px,3vw,44px);height:1px;
+  background:linear-gradient(90deg, rgba(199,172,109,0), rgba(199,172,109,.7));
+}
+@media(max-width:1000px){.h26.inv .brand-role{display:none}}
+
+/* ── The nav CTA ────────────────────────────────────────────
+   The same object as the page's primary button, one size down. One
+   typeface throughout, and the price in its own cell behind a hairline
+   rather than a serif ₹ pasted in beside letter-spaced caps. */
+.h26.inv .ncta{
+  display:inline-flex;align-items:stretch;
+  background:#E6D3A3;
+  border:1px solid #E6D3A3;
+  /* booking-2026.css:87 forces `color:#fff !important` on .ncta */
+  color:#10382A!important;
+  font-family:var(--sans);
+  line-height:1;
+  padding:0;white-space:nowrap;border-radius:2px;overflow:hidden;
+  transition:background-color .22s var(--ease-out),
+             border-color .22s var(--ease-out),
+             box-shadow .22s var(--ease-out),
+             color .22s var(--ease-out);
+}
+.h26.inv .ncta .lbl{
+  display:flex;align-items:center;
+  padding:13px 15px 13px 19px;
+  font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  transition:letter-spacing .22s var(--ease-out);
+}
+.h26.inv .ncta .ncta-price{
+  display:flex;align-items:center;
+  font-family:var(--sans);color:inherit;
+  padding:13px 19px 13px 15px;
+  font-style:normal;font-weight:700;
+  font-size:13px;letter-spacing:.03em;
+  font-variant-numeric:tabular-nums;
+  border-left:1px solid rgba(16,56,42,.26);
+  transition:border-color .22s var(--ease-out);
+}
+/* the same keyline hover every other button uses */
+.h26.inv .ncta:hover{
+  background:#EFE1BE;
+  border-color:#EFE1BE;
+  color:#10382A!important;
+  box-shadow:inset 0 0 0 1px rgba(16,56,42,.34);
+}
+.h26.inv .ncta:hover .lbl{letter-spacing:.168em}
+.h26.inv .ncta:active{background:#DCC793;border-color:#DCC793;
+  box-shadow:inset 0 0 0 1px rgba(16,56,42,.5)}
+.h26.inv .ncta:focus-visible{outline:2px solid #E6D3A3;outline-offset:3px}
+
+/* A quiet variant for pages with nothing left to sell — the thank-you
+   page's only nav action is "email us". */
+.h26.inv .ncta-quiet{
+  background:transparent;
+  border-color:rgba(199,172,109,.6);
+  color:#EDD79C!important;
+}
+.h26.inv .ncta-quiet .lbl{padding:13px 19px}
+.h26.inv .ncta-quiet:hover{
+  background:#EFE1BE;border-color:#EFE1BE;color:#10382A!important;
+  box-shadow:inset 0 0 0 1px rgba(16,56,42,.34);
+}
+
+/* ── Type on emerald ───────────────────────────────────────── */
+.h26.inv .hero h1,
+.h26.inv .say.cream h2,
+.h26.inv .say.dark h2,
+.h26.inv .book h2{color:#F0DFAF;font-weight:700}
+.h26.inv .hero .sub,
+.h26.inv .say.cream .p,
+.h26.inv .say.dark .p,
+.h26.inv .book p{color:var(--on-green)}
+.h26.inv .hero .superhead{color:#E8CE90}
+.h26.inv .hero .rule{background:var(--gold-deep)}
+.h26.inv .hero .trustline{color:var(--on-green-q)}
+.h26.inv .hero .trustline b{color:#EDD79C}
+.h26.inv .say.cream .eyebrow,
+.h26.inv .book .eyebrow{color:#EDD79C;opacity:1}
+.h26.inv .cue{color:var(--on-green-q)}
+.h26.inv .cue-line{background:rgba(199,172,109,.5)}
+
+/* ── Type ───────────────────────────────────────────────────
+   Light text on a dark ground optically thins out — the same weight that
+   looked right as ink on cream reads as spindly reversed out of emerald.
+   Body copy goes to 500 across the page, and up a step in size, which is
+   most of what makes it feel more present. */
+.h26.inv .hero .sub{
+  font-size:clamp(17px,1.85vw,20.5px);font-weight:500;line-height:1.7;
+  max-width:520px;color:#F4F1EA;
+}
+.h26.inv .hero .sub b{font-weight:700;color:#fff}
+.h26.inv .say .p{
+  font-size:clamp(17px,1.8vw,19.5px);font-weight:500;line-height:1.75;
+  opacity:1;color:#F4F1EA;
+}
+.h26.inv .say.sand .p{color:var(--ink)}
+.h26.inv .say h2{font-weight:700}
+.h26.inv .hero h1{font-weight:700}
+.h26.inv .hero .superhead{
+  font-weight:700;font-size:clamp(13px,1.35vw,15.5px);letter-spacing:.1em;
+  color:#EDD79C;
+}
+.h26.inv .eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.26em;opacity:1}
+
+/* Panels and lists carry most of the reading — lift them too. */
+.h26.inv .deliv h3{font-size:clamp(23px,2.6vw,28px)}
+.h26.inv .deliv p{font-size:17.5px;font-weight:500;line-height:1.7;color:#F4F1EA}
+.h26.inv .nopitch p{font-size:17.5px;font-weight:500;color:#F4F1EA}
+.h26.inv .say.sand .isyou li{font-size:17.5px;font-weight:500;line-height:1.65;color:var(--ink)}
+.h26.inv .say.sand .isyou li b{font-weight:700}
+.h26.inv .pc-list li{font-size:17px;font-weight:500}
+.h26.inv .whome p{font-size:17.5px;font-weight:500;line-height:1.7;color:#F4F1EA}
+.h26.inv .whome p b{font-weight:700;color:#fff}
+.h26.inv .steps b{font-size:16.5px;font-weight:700}
+.h26.inv .steps .s-d{font-size:14.5px;font-weight:500}
+.h26.inv .hero .trustline{font-size:14px;font-weight:500}
+.h26.inv .hero .idbio{font-size:15px;font-weight:500}
+.h26.inv .fq summary{font-size:16.5px;font-weight:600}
+.h26.inv .fq p{font-size:16.5px;font-weight:500;line-height:1.75}
+
+/* ── The headline ──────────────────────────────────────────
+   Two things, both small. A vertical gradient through each word so the
+   gold catches light at the top and settles at the foot, the way struck
+   metal does; and a soft dark drop-shadow so the letters sit on the
+   ground rather than in it.
+
+   The gradient is on the split words rather than the h1 because each
+   word carries its own opacity during the reveal — clipping the h1's
+   background to text would have shown the fill through words that had
+   not arrived yet. Without JS there are no word spans and the flat
+   colour below is what renders. */
+.h26.inv .hero h1{
+  color:#F0DFAF;
+  filter:drop-shadow(0 5px 14px rgba(3,16,10,.6));
+}
+html.js .h26.inv .hero h1 .w{
+  background-image:linear-gradient(178deg,#FCF3D8 0%,#F0DFAF 44%,#D6B978 100%);
+  -webkit-background-clip:text;
+          background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* ── Panels that used to be paper ──────────────────────────── */
+/* ── Cards ──────────────────────────────────────────────────
+   A translucent white wash on a dark ground gives you a card a shade
+   lighter than what it sits on, which is the one thing that reads as
+   flat. These go the other way: darker than the band, with a gold edge
+   and a hairline of light along the top, so the panel sits forward
+   instead of dissolving into the page. */
+.h26.inv .hero .idcard,
+.h26.inv .deliv .d,
+.h26.inv .paycard2,
+.h26.inv .nopitch{
+  background:linear-gradient(178deg, rgba(4,20,13,.72), rgba(4,20,13,.86));
+  border:1px solid rgba(199,172,109,.62);
+  box-shadow:
+    inset 0 1px 0 rgba(230,211,163,.22),
+    0 26px 54px -30px rgba(0,0,0,.85);
+}
+.h26.inv .hero .idname{color:#F0DFAF}
+.h26.inv .hero .idrole{color:#E8CE90}
+.h26.inv .hero .idbio{color:var(--on-green);opacity:1;font-size:14px}
+
+.h26.inv .deliv .d:hover{background:linear-gradient(178deg, rgba(6,26,17,.66), rgba(6,26,17,.82));border-color:#C7AC6D}
+.h26.inv .deliv .n{color:#E8CE90}
+.h26.inv .deliv h3{color:#F0DFAF;font-weight:700}
+.h26.inv .deliv p{color:var(--on-green);font-size:17px;line-height:1.75}
+
+
+.h26.inv .nopitch h3{color:#F0DFAF}
+.h26.inv .nopitch p{color:var(--on-green);font-size:17px}
+.h26.inv .nopitch p b{color:#fff;font-weight:700}
+
+/* ── The payment card — an emerald panel with a gold edge ──── */
+.h26.inv .paycard2{border-top:4px solid var(--gold-deep)}
+.h26.inv .pc-head{border-bottom-color:var(--panel-line)}
+.h26.inv .pc-kicker{color:#F0DFAF}
+.h26.inv .pc-dur{color:#E8CE90}
+.h26.inv .pc-list h3{color:#E8CE90}
+.h26.inv .pc-list li{color:var(--on-green);border-bottom-color:rgba(199,172,109,.3);font-size:16.5px}
+.h26.inv .pc-list li:before{background:rgba(199,172,109,.24);color:#F0DFAF}
+.h26.inv .pc-buy{background:rgba(199,172,109,.13);border-left-color:rgba(199,172,109,.55)}
+.h26.inv .pc-price{color:#F0DFAF}
+.h26.inv .pc-price .cur{color:var(--gold-deep)}
+.h26.inv .pc-note{color:var(--on-green-q)}
+.h26.inv .pc-methods span,
+.h26.inv .pc-secure{color:var(--on-green-q)}
+@media(max-width:760px){
+  .h26.inv .pc-buy{border-left:none;border-top:1px solid var(--panel-line)}
+}
+
+/* ── Testimonials become champagne rather than white ───────── */
+.h26.inv .story{background:var(--sa);border-top:2px solid var(--gold-deep)}
+.h26.inv .story p{color:var(--em);font-size:20px}
+.h26.inv .story .by{color:rgba(21,66,48,.6)}
+
+/* The about-portrait nameplate was the last white object on the page. */
+.h26.inv .nameplate{background:var(--sa);border-left-color:var(--gold-deep)}
+.h26.inv .nameplate b{color:var(--em)}
+.h26.inv .nameplate span{color:var(--gold-text)}
+
+/* ── Buttons ───────────────────────────────────────────────
+   The inherited button carried three things that read as unfinished once
+   the page went dark: a white shimmer sweep that skewed across the fill
+   on hover, a `:hover{color:#fff}` rule that bleached the label to white
+   on champagne, and a coloured drop shadow.
+
+   The hover here is a keyline, not a glow. The fill stays put, a hairline
+   is inset one step inside the edge, and the label's tracking opens by a
+   few thousandths — the button reads as engaged without anything moving
+   or lighting up. */
+
+.h26.inv .btn:after{content:none!important}
+
+.h26.inv .btn{
+  font-size:12.5px;
+  font-weight:600;
+  letter-spacing:.12em;
+  padding:18px 36px;
+  border-radius:2px;
+  box-shadow:none;
+  transition:
+    background-color .22s var(--ease-out),
+    border-color .22s var(--ease-out),
+    color .22s var(--ease-out),
+    letter-spacing .22s var(--ease-out),
+    box-shadow .22s var(--ease-out);
+}
+.h26.inv .btn:hover{transform:none;letter-spacing:.152em}
+.h26.inv .btn:active{transform:none;transition-duration:.08s}
+.h26.inv .btn:focus-visible{outline:2px solid #E6D3A3;outline-offset:3px}
+
+/* Primary on emerald — flat champagne, ink-green label. Flat, not a
+   gradient: a 135° gradient across a 380px button shows its own seam. */
+/* Gold is the primary everywhere on the inverted scheme. This used to be
+   a list of ancestors — hero, .say.cream, .book and so on — which meant
+   any new section got the inherited forest button, invisible on a forest
+   ground. Stated as a default with one exception instead. */
+.h26.inv .btn-em,
+.h26.inv .btn-ch{
+  background:#E6D3A3;
+  color:#10382A;
+  border:1px solid #E6D3A3;
+}
+.h26.inv .btn-em:hover,
+.h26.inv .btn-ch:hover{
+  background:#EFE1BE;
+  border-color:#EFE1BE;
+  color:#10382A;
+  box-shadow:inset 0 0 0 1px rgba(16,56,42,.34);
+}
+.h26.inv .btn-em:active,
+.h26.inv .btn-ch:active{
+  background:#DCC793;border-color:#DCC793;
+  box-shadow:inset 0 0 0 1px rgba(16,56,42,.5);
+}
+
+/* The exception: on the champagne band, forest is what has contrast. */
+.h26.inv .say.sand .btn-em{
+  background:var(--forest);
+  color:var(--ch);
+  border:1px solid var(--forest);
+}
+.h26.inv .say.sand .btn-em:hover{
+  background:var(--forest-deep);
+  border-color:var(--forest-deep);
+  color:#F3E8CB;
+  box-shadow:inset 0 0 0 1px rgba(230,211,163,.34);
+}
+
+/* Outline — the quiet secondary actions. Fills on hover, no keyline. */
+.h26.inv .btn-ol{
+  background:transparent;
+  border:1px solid var(--gold-deep);
+  color:var(--ch);
+}
+.h26.inv .btn-ol:hover{
+  background:#E6D3A3;
+  border-color:#E6D3A3;
+  color:#10382A;
+  box-shadow:none;
+}
+
+/* ── Photo bands ───────────────────────────────────────────── */
+.fband{
+  position:relative;
+  margin:clamp(34px,4.6vw,54px) auto 0;
+  max-width:900px;
+  border:1px solid rgba(199,172,109,.62);
+  padding:10px;
+  background:linear-gradient(178deg, rgba(4,20,13,.7), rgba(4,20,13,.85));
+  box-shadow:inset 0 1px 0 rgba(230,211,163,.2), 0 26px 54px -32px rgba(0,0,0,.85);
+}
+.fband img{
+  width:100%;height:clamp(240px,34vw,420px);
+  object-fit:cover;display:block;
+}
+.fband figcaption{
+  font-family:var(--serif);font-style:italic;
+  font-size:clamp(16px,1.9vw,20px);line-height:1.5;
+  color:#F0DFAF;
+  padding:16px 10px 6px;text-align:center;
+}
+/* On the champagne band the frame flips to ink-on-light. */
+.fband.fb-warm{border-color:rgba(21,66,48,.28);background:rgba(255,255,255,.35)}
+.fband.fb-warm figcaption{color:var(--em)}
+
+/* ── Steps, FAQ, form on emerald ───────────────────────────── */
+.h26.inv .steps b{color:#fff}
+.h26.inv .steps .s-d{color:var(--on-green-q)}
+.h26.inv .steps .s-n{border-color:var(--panel-line);color:var(--ch)}
+.h26.inv .fq details{border-bottom:1px solid var(--panel-line-s)}
+.h26.inv .askfirst summary{color:#EDD79C}
+
+/* ── Champagne band keeps its ink, just heavier ────────────── */
+.h26.inv .say.sand h2{color:var(--em);font-weight:600}
+.h26.inv .say.sand .isyou li{font-size:17px;line-height:1.7;color:var(--ink)}
+.h26.inv .say.sand .eyebrow{color:var(--gold-text);opacity:1}
+
+/* ── Footer ────────────────────────────────────────────────── */
+.h26.inv footer{background:#061C13;border-top:1px solid var(--panel-line-s)}
+
+/* ════════════════════════════════════════════════════════════
+   PHONE
+   The page is bought on a phone. Everything below is about
+   getting the CTA in reach and the copy readable one-handed.
+   ════════════════════════════════════════════════════════════ */
+@media(max-width:960px){
+  /* the nav CTA is the whole nav now — it must never be hidden */
+  .h26.inv .ncta{display:inline-flex!important}
+}
+
+@media(max-width:700px){
+  .h26.inv .nin{padding:11px 0;gap:12px}
+  .h26.inv .brand img.lg{width:34px;height:34px}
+  .h26.inv .brand span{font-size:16px}
+  .h26.inv .ncta .lbl{padding:11px 11px 11px 14px;font-size:10px;letter-spacing:.1em}
+  .h26.inv .ncta .ncta-price{padding:11px 14px 11px 11px;font-size:12px}
+
+  /* fixed backgrounds stutter on iOS — force scroll, and drop the
+     marble to a flat wash where a cover crop would show nothing but mud */
+  .h26.inv .hero,
+  .h26.inv .say.cream,
+  .h26.inv .say.dark,
+  .h26.inv .book{background-size:cover,180% auto}
+
+  .h26.inv .say{padding:clamp(48px,12vw,70px) 0}
+
+  /* ── Phone type ──
+     Held at arm's length, reversed out of a dark ground, in daylight.
+     Everything goes up a step and the body weight stays at 500 — this is
+     where the "make it more visible" actually has to land. */
+  .h26.inv .hero h1{font-size:clamp(36px,9.4vw,46px);line-height:1.1;font-weight:700}
+  .h26.inv .hero .superhead{font-size:13px;letter-spacing:.08em;line-height:1.55}
+  .h26.inv .hero .sub{font-size:18px;line-height:1.65;max-width:none;font-weight:500}
+  .h26.inv .say h2{font-size:clamp(28px,7.4vw,36px);line-height:1.15}
+  .h26.inv .say .p{font-size:17.5px;line-height:1.7}
+  .h26.inv .deliv h3{font-size:23px}
+  .h26.inv .deliv p,
+  .h26.inv .nopitch p,
+  .h26.inv .whome p,
+  .h26.inv .say.sand .isyou li{font-size:17.5px;line-height:1.65;font-weight:500}
+  .h26.inv .story p{font-size:19px;line-height:1.5}
+  .h26.inv .pc-list li{font-size:17px}
+  .h26.inv .fq summary,
+  .h26.inv .fq p{font-size:17px}
+  .h26.inv .steps b{font-size:17px}
+  .h26.inv .steps .s-d{font-size:15px}
+  .h26.inv .eyebrow{font-size:12px;letter-spacing:.2em}
+  .h26.inv .hero .trustline{font-size:14.5px}
+  .h26.inv .hero .idbio{font-size:15.5px}
+  .h26.inv .btn{font-size:13px;padding:19px 24px;letter-spacing:.1em}
+
+  /* the seam is shallower on a narrow screen or it swallows the copy */
+  .h26.inv .seam{height:clamp(34px,9vw,52px)}
+  .h26.inv .say.sand,
+  .h26.inv .say.dark,
+  .h26.inv .say.cream,
+  .h26.inv .book{padding-top:clamp(58px,15vw,88px)}
+  .h26.inv .hero .g{padding-bottom:clamp(64px,16vw,96px)}
+  .h26.inv .hero .cue{bottom:clamp(52px,13vw,74px)}
+
+  .fband{padding:7px;margin-top:30px}
+  .fband img{height:clamp(210px,52vw,280px)}
+  .fband figcaption{font-size:16px;padding:12px 6px 4px}
+
+  /* full-width tap targets everywhere, not just in the hero */
+  .h26.inv .btn{width:100%}
+  .h26.inv .ncta{width:auto}
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   THANK-YOU PAGE  (cb-x7r9.html)
+   Someone has just paid. Two jobs left: pick a slot, and take the
+   assessment before the call. Everything here serves those.
+   ════════════════════════════════════════════════════════════ */
+
+/* the confirmation header + the calendar read as one emerald field */
+.h26.inv .ty,
+.h26.inv .cal-section,
+.h26.inv .ty-assess,
+.h26.inv .ty-quiz{
+  position:relative;isolation:isolate;
+  background-color:var(--band);
+  background-repeat:no-repeat;
+  background-size:100% 100%;
+  color:var(--on-green);
+}
+.h26.inv .ty{background-image:linear-gradient(180deg,#0F3F2E 0%,#0A2C1F 62%,#082419 100%)}
+.h26.inv .cal-section{background-image:linear-gradient(180deg,#082419 0%,#0A2C1F 60%,#0A2719 100%)}
+.h26.inv .ty-assess{background-image:linear-gradient(180deg,#14503B 0%,#0C3122 42%,#0A2719 100%)}
+.h26.inv .ty-quiz{background-image:linear-gradient(180deg,#0A2719 0%,#0C3122 50%,#061C13 100%)}
+
+.h26.inv .ty:before,
+.h26.inv .cal-section:before,
+.h26.inv .ty-assess:before,
+.h26.inv .ty-quiz:before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:url(../images/gold-waves.svg);
+  background-repeat:no-repeat;background-size:cover;background-position:center;
+  transform:scale(1.1) translate3d(0,0,0);
+  will-change:transform;
+  animation:waveDrift 47s ease-in-out infinite;
+}
+.h26.inv .cal-section:before{background-position:right 20% center;animation-duration:59s;animation-delay:-13s}
+.h26.inv .ty-assess:before {background-position:left 30% bottom;animation-duration:53s;animation-delay:-27s}
+.h26.inv .ty-quiz:before   {background-position:left top;animation-duration:61s;animation-delay:-5s}
+@media(prefers-reduced-motion:reduce){
+  .h26.inv .ty:before,.h26.inv .cal-section:before,
+  .h26.inv .ty-assess:before,.h26.inv .ty-quiz:before{animation:none}
+}
+
+/* the expanding rings and the radial pool behind them were the same haze
+   the homepage lost — the tick alone carries the moment */
+.h26.inv .ty-rings{display:none}
+.h26.inv .ty:before{content:""}
+.h26.inv .ty .chk{border-color:#E8CE90;color:#F0DFAF;border-width:1px}
+.h26.inv .ty .eyebrow{color:#EDD79C;opacity:1}
+.h26.inv .ty h1{color:#F0DFAF;font-weight:700;
+  filter:drop-shadow(0 5px 14px rgba(3,16,10,.6))}
+.h26.inv .ty .lead{color:var(--on-green);font-size:clamp(17px,1.8vw,19.5px);font-weight:500}
+.h26.inv .ty .lead b{color:#fff;font-weight:700}
+
+/* the calendar is the point of the page — give it the card treatment */
+.h26.inv .cal-section .cal-header{
+  color:#EDD79C;opacity:1;font-weight:600;font-size:12px;letter-spacing:.24em}
+.h26.inv .cal-section .cal-frame{
+  border:1px solid rgba(199,172,109,.62);
+  border-radius:3px;
+  background:#FBFAF5;
+  box-shadow:inset 0 1px 0 rgba(230,211,163,.22), 0 30px 60px -34px rgba(0,0,0,.85);
+}
+.h26.inv .cal-section iframe{border-radius:0}
+.h26.inv .cal-section .cal-note{color:#B99A5C;font-size:13px}
+
+/* ── the assessment block ── */
+.h26.inv .ty-assess{padding:clamp(74px,9vw,124px) 0 clamp(52px,6.5vw,84px);text-align:center}
+.h26.inv .ty-assess .eyebrow{color:#EDD79C;opacity:1;display:inline-block;position:relative;padding:0 42px}
+.h26.inv .ty-assess .eyebrow:before,
+.h26.inv .ty-assess .eyebrow:after{content:"";position:absolute;top:50%;width:30px;height:1px;
+  background:rgba(199,172,109,.7)}
+.h26.inv .ty-assess .eyebrow:before{left:0}
+.h26.inv .ty-assess .eyebrow:after{right:0}
+.h26.inv .ty-assess h2{
+  font-family:var(--serif);color:#F0DFAF;font-weight:700;
+  font-size:clamp(28px,4.2vw,46px);line-height:1.1;margin:16px auto 0;max-width:20ch}
+.h26.inv .ty-assess .lead{
+  color:var(--on-green);font-size:clamp(17px,1.8vw,19px);font-weight:500;line-height:1.75;
+  max-width:56ch;margin:20px auto 0}
+
+.h26.inv .assess-card{
+  display:grid;grid-template-columns:1.1fr .9fr;
+  max-width:760px;margin:clamp(30px,4vw,46px) auto 0;text-align:left;
+  background:linear-gradient(178deg, rgba(4,20,13,.72), rgba(4,20,13,.86));
+  border:1px solid rgba(199,172,109,.62);
+  border-top:3px solid var(--gold-deep);
+  box-shadow:inset 0 1px 0 rgba(230,211,163,.22), 0 26px 54px -30px rgba(0,0,0,.85);
+}
+@media(max-width:700px){.h26.inv .assess-card{grid-template-columns:1fr}}
+.h26.inv .ac-body{padding:clamp(24px,3.2vw,34px)}
+.h26.inv .ac-kicker{
+  display:block;font-family:var(--serif);font-weight:700;
+  font-size:clamp(21px,2.4vw,26px);color:#F0DFAF;line-height:1.15}
+.h26.inv .ac-list{list-style:none;margin:16px 0 0;padding:0}
+.h26.inv .ac-list li{
+  position:relative;padding:10px 0 10px 30px;font-size:16.5px;font-weight:500;
+  line-height:1.6;color:var(--on-green);border-bottom:1px solid rgba(199,172,109,.3)}
+.h26.inv .ac-list li:last-child{border-bottom:none}
+.h26.inv .ac-list li:before{
+  content:"✓";position:absolute;left:0;top:11px;width:20px;height:20px;
+  display:flex;align-items:center;justify-content:center;border-radius:50%;
+  background:rgba(199,172,109,.24);color:#F0DFAF;font-size:11px;font-weight:700}
+.h26.inv .ac-go{
+  padding:clamp(24px,3.2vw,34px);
+  background:rgba(199,172,109,.13);
+  border-left:1px solid rgba(199,172,109,.55);
+  display:flex;flex-direction:column;justify-content:center;gap:14px;text-align:center}
+@media(max-width:700px){
+  .h26.inv .ac-go{border-left:none;border-top:1px solid rgba(199,172,109,.55)}
+}
+.h26.inv .ac-go .btn{width:100%}
+.h26.inv .ac-link{
+  font-size:13px;line-height:1.6;color:#CFD6CE;margin:0;
+}
+.h26.inv .ac-link b{color:#F0DFAF;font-weight:600;white-space:nowrap}
+.h26.inv .ac-later{
+  font-size:13.5px;font-weight:500;color:#CFD6CE;
+  border-bottom:1px solid rgba(199,172,109,.5);display:inline;padding-bottom:2px;
+  transition:color .22s var(--ease-out),border-color .22s var(--ease-out)}
+.h26.inv .ac-later:hover{color:#F0DFAF;border-color:#E6D3A3}
+
+/* ── prep block ── */
+.h26.inv .ty-quiz{padding:clamp(56px,7vw,92px) 0 clamp(60px,7vw,96px);text-align:center}
+.h26.inv .ty-quiz .eyebrow{color:#EDD79C;opacity:1}
+.h26.inv .ty-quiz h2{
+  font-family:var(--serif);color:#F0DFAF;font-weight:700;
+  font-size:clamp(26px,3.6vw,40px);line-height:1.12;margin:14px auto 0;max-width:22ch}
+.h26.inv .ty-quiz p{
+  color:var(--on-green);font-size:clamp(16.5px,1.7vw,18px);font-weight:500;
+  line-height:1.75;max-width:58ch;margin:18px auto 0}
+
+/* the seam that carries the calendar band into the assessment band */
+.h26.inv .seam-assess{
+  position:absolute;left:0;right:0;top:-1px;
+  height:clamp(46px,5.6vw,84px);
+  z-index:3;pointer-events:none;
+  background-image:url(../images/seam-g1.svg);
+  background-repeat:no-repeat;background-position:center top;background-size:100% 100%;
+  transform:scaleY(-1);
+}
+
+@media(max-width:700px){
+  .h26.inv .ty-assess .lead,
+  .h26.inv .ty-quiz p{font-size:17px}
+  .h26.inv .ac-list li{font-size:17px}
+}
+
+
+/* ════════════════════════════════════════════════════════════
+   ASSESSMENT  (assessment.html)
+   The page carries its own inline stylesheet built for cream. These
+   repaint it onto emerald without touching that file's structure.
+   ════════════════════════════════════════════════════════════ */
+
+.h26.inv .atop{
+  background:linear-gradient(180deg, rgba(8,32,22,.92), rgba(6,26,18,.88));
+  -webkit-backdrop-filter:blur(16px) saturate(1.1);
+          backdrop-filter:blur(16px) saturate(1.1);
+  border-bottom:none;
+  display:block;padding:0;
+}
+.h26.inv .atop:after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:1px;
+  background:linear-gradient(90deg,
+    rgba(199,172,109,0) 0%, rgba(199,172,109,.55) 16%,
+    rgba(230,211,163,.8) 50%, rgba(199,172,109,.55) 84%,
+    rgba(199,172,109,0) 100%);
+  pointer-events:none;
+}
+
+.h26.inv .eqshell{
+  position:relative;isolation:isolate;
+  background-color:var(--band);
+  background-image:linear-gradient(180deg,#0F3F2E 0%,#0A2C1F 54%,#061C13 100%);
+  background-repeat:no-repeat;background-size:100% 100%;
+  color:var(--on-green);
+}
+.h26.inv .eqshell:before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:url(../images/gold-waves.svg);
+  background-repeat:no-repeat;background-size:cover;background-position:center;
+  transform:scale(1.1) translate3d(0,0,0);
+  will-change:transform;
+  animation:waveDrift 47s ease-in-out infinite;
+}
+@media(prefers-reduced-motion:reduce){.h26.inv .eqshell:before{animation:none}}
+/* the page's own expanding rings were the haze the rest of the site lost */
+.h26.inv .eqrings{display:none}
+
+/* ── intro ── */
+.h26.inv .intro .eyebrow{color:#EDD79C;opacity:1}
+.h26.inv .intro h1{
+  color:#F0DFAF;font-weight:700;
+  filter:drop-shadow(0 5px 14px rgba(3,16,10,.6));
+}
+.h26.inv .intro p{color:var(--on-green);opacity:1;font-weight:500;font-size:clamp(17px,2vw,19px)}
+.h26.inv .meta-row{color:#CFD6CE}
+.h26.inv .meta-row .dot{background:var(--gold-deep)}
+.h26.inv .fineprint{color:#B99A5C}
+
+/* ── questions ── */
+.h26.inv .qcount{color:#B99A5C}
+.h26.inv .bar{background:rgba(199,172,109,.22)}
+.h26.inv .bar i{background:linear-gradient(90deg,#C7AC6D,#F0DFAF)}
+.h26.inv .qhead{color:#EDD79C}
+.h26.inv .qbox h2{color:#F0DFAF;font-weight:700}
+.h26.inv .opt{
+  background:linear-gradient(178deg, rgba(4,20,13,.72), rgba(4,20,13,.86));
+  border:1px solid rgba(199,172,109,.5);
+  color:var(--on-green);
+  font-weight:500;
+  box-shadow:inset 0 1px 0 rgba(230,211,163,.14);
+}
+.h26.inv .opt:hover{
+  background:linear-gradient(178deg, rgba(6,28,19,.66), rgba(6,28,19,.82));
+  border-color:#C7AC6D;
+}
+.h26.inv .opt.sel{
+  background:#E6D3A3;border-color:#E6D3A3;color:#10382A;font-weight:600;
+  box-shadow:inset 0 0 0 1px rgba(16,56,42,.34);
+}
+.h26.inv .back2{color:#CFD6CE}
+.h26.inv .back2:hover{color:#F0DFAF}
+
+/* ── the email gate before the result ── */
+.h26.inv .gift{color:var(--on-green)}
+.h26.inv .field label{color:#B99A5C}
+.h26.inv .field input{
+  background:rgba(4,20,13,.6);
+  border:1px solid rgba(199,172,109,.5);
+  color:#F4F1EA;font-weight:500;
+}
+.h26.inv .field input::placeholder{color:rgba(207,214,206,.55)}
+.h26.inv .field input:focus{border-color:#E6D3A3;outline:2px solid rgba(230,211,163,.35);outline-offset:1px}
+.h26.inv .err{color:#F3B7A0}
+
+/* ── result ── */
+.h26.inv .res .eyebrow{color:#EDD79C;opacity:1}
+.h26.inv .res h1,.h26.inv .res h2{color:#F0DFAF;font-weight:700}
+.h26.inv .res-card{
+  background:linear-gradient(178deg, rgba(4,20,13,.72), rgba(4,20,13,.86));
+  border:1px solid rgba(199,172,109,.62);
+  box-shadow:inset 0 1px 0 rgba(230,211,163,.22), 0 26px 54px -30px rgba(0,0,0,.85);
+}
+.h26.inv .res-card p{color:var(--on-green);opacity:1;font-weight:500;font-size:16.5px}
+.h26.inv .res-card p b{color:#fff;font-weight:700;opacity:1}
+.h26.inv .ranks .cap{color:#B99A5C}
+.h26.inv .rank-row .nm{color:var(--on-green)}
+.h26.inv .rank-bar{background:rgba(199,172,109,.2)}
+.h26.inv .rank-bar i{background:linear-gradient(90deg,#C7AC6D,#F0DFAF)}
+.h26.inv .cta-band{
+  background:linear-gradient(178deg, rgba(4,20,13,.78), rgba(4,20,13,.9));
+  border:1px solid rgba(199,172,109,.62);
+}
+.h26.inv .cta-band h3{color:#F0DFAF;font-weight:700}
+.h26.inv .cta-band p{color:var(--on-green);font-weight:500}
+.h26.inv .restart{color:#CFD6CE}
+.h26.inv .restart:hover{color:#F0DFAF}
+
+
+/* ════════════════════════════════════════════════════════════
+   REPORT  (report.html)
+   Built on the older base/layout/sections stylesheets rather than
+   home-2026, so it needs its own repaint onto emerald.
+   ════════════════════════════════════════════════════════════ */
+
+.h26.inv.rpt{
+  background-color:#061C13;
+  color:var(--on-green);
+  font-family:var(--sans);
+}
+/* the wave field, same as every other page */
+.h26.inv.rpt:before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-color:#0A2C1F;
+  background-image:
+    url(../images/gold-waves.svg),
+    linear-gradient(180deg,#0F3F2E 0%,#0A2C1F 55%,#061C13 100%);
+  background-repeat:no-repeat,no-repeat;
+  background-size:cover,100% 100%;
+  background-position:center,center;
+}
+.h26.inv.rpt > *{position:relative;z-index:1}
+
+.h26.inv.rpt .wrap{max-width:1100px;margin:0 auto;padding:0 clamp(24px,5vw,60px)}
+
+/* The report is built on base/layout/sections, not home-2026, so the nav
+   geometry that every other page inherits does not exist here. Restated for
+   this page only. */
+.h26.inv.rpt #nav{position:sticky;top:0;z-index:60}
+.h26.inv.rpt #nav .nin{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:clamp(16px,3vw,34px);padding:15px 0;
+  max-width:1100px;margin:0 auto;
+}
+.h26.inv.rpt #nav .brand{display:flex;align-items:center;gap:14px;text-decoration:none}
+.h26.inv.rpt #nav .brand img.lg{width:40px;height:40px;object-fit:contain;display:block}
+.h26.inv.rpt #nav .brand span{
+  font-family:var(--serif);font-size:21px;font-weight:600;letter-spacing:.05em;color:#F0DFAF}
+.h26.inv.rpt #nav .ncta{text-decoration:none}
+/* the page's own top padding assumed a fixed injected nav that is now gone */
+.h26.inv.rpt .wrap{padding-top:clamp(24px,4vw,48px)}
+.h26.inv.rpt #nav .wrap{padding-top:0}
+
+/* ── header ── */
+.h26.inv.rpt .rhead{text-align:center;padding-bottom:clamp(20px,3vw,32px)}
+.h26.inv.rpt .rhead .eyebrow{color:#EDD79C;opacity:1;font-weight:600;letter-spacing:.26em}
+.h26.inv.rpt .rhead-name{
+  font-family:var(--serif);color:#F0DFAF;font-weight:700;
+  font-size:clamp(34px,5.2vw,58px);line-height:1.06;margin:14px 0 0;
+  filter:drop-shadow(0 5px 14px rgba(3,16,10,.6));
+}
+.h26.inv.rpt .rhead-tag{
+  color:var(--on-green);font-size:clamp(17px,1.9vw,19.5px);font-weight:500;
+  line-height:1.7;max-width:56ch;margin:16px auto 0;
+}
+
+/* ── cards ── */
+.h26.inv.rpt .card,
+.h26.inv.rpt .insight-card,
+.h26.inv.rpt .cta-section{
+  background:linear-gradient(178deg, rgba(4,20,13,.72), rgba(4,20,13,.86));
+  border:1px solid rgba(199,172,109,.62);
+  border-radius:3px;
+  box-shadow:inset 0 1px 0 rgba(230,211,163,.22), 0 26px 54px -30px rgba(0,0,0,.85);
+  color:var(--on-green);
+}
+.h26.inv.rpt .lab,
+.h26.inv.rpt .insight-label,
+.h26.inv.rpt .cat-hint,
+.h26.inv.rpt .note{color:#B99A5C}
+.h26.inv.rpt .profile-type,
+.h26.inv.rpt .ring-num,
+.h26.inv.rpt .big,
+.h26.inv.rpt .cat-val,
+.h26.inv.rpt .pct{color:#F0DFAF}
+.h26.inv.rpt .cat-name,
+.h26.inv.rpt .nm,
+.h26.inv.rpt p,
+.h26.inv.rpt li{color:var(--on-green)}
+/* emphasis inside the copy was inheriting a forest colour from sections.css
+   and vanishing against the dark card */
+.h26.inv.rpt p b,
+.h26.inv.rpt p strong,
+.h26.inv.rpt li b,
+.h26.inv.rpt li strong{color:#fff;font-weight:700}
+.h26.inv.rpt h1,.h26.inv.rpt h2,.h26.inv.rpt h3,.h26.inv.rpt h4{
+  font-family:var(--serif);color:#F0DFAF;font-weight:700}
+.h26.inv.rpt .profile-tag,
+.h26.inv.rpt .pill{
+  background:rgba(199,172,109,.16);
+  border:1px solid rgba(199,172,109,.5);
+  color:#F0DFAF;
+}
+
+/* ── the score ring and category bars ── */
+.h26.inv.rpt .ring-wrap circle.edge{stroke:rgba(199,172,109,.22)}
+.h26.inv.rpt .ring-wrap circle.arche{stroke:#E6D3A3}
+.h26.inv.rpt .cat-track{background:rgba(199,172,109,.2)}
+.h26.inv.rpt .cat-fill{background:linear-gradient(90deg,#C7AC6D,#F0DFAF)}
+
+/* ── closing CTA ── */
+.h26.inv.rpt .cta-section{text-align:center}
+.h26.inv.rpt .cta-inner p{color:var(--on-green);font-weight:500}
+.h26.inv.rpt .btn-champ{
+  background:#E6D3A3;color:#10382A;border:1px solid #E6D3A3;
+  font-family:var(--sans);font-size:12.5px;font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;padding:18px 36px;border-radius:2px;display:inline-flex;
+  align-items:center;justify-content:center;
+  transition:background-color .22s var(--ease-out),border-color .22s var(--ease-out),
+             letter-spacing .22s var(--ease-out),box-shadow .22s var(--ease-out);
+}
+.h26.inv.rpt .btn-champ:hover{
+  background:#EFE1BE;border-color:#EFE1BE;color:#10382A;
+  letter-spacing:.152em;box-shadow:inset 0 0 0 1px rgba(16,56,42,.34);
+}
